@@ -39,7 +39,9 @@ public class WebSocketExample {
 
         });
         server
-                .websocketHandler(ws -> ws.handler(ws::writeBinaryMessage))
+                .websocketHandler(serverWebSocket -> {
+                    serverWebSocket.writeFrame(io.vertx.core.http.WebSocketFrame.textFrame("Hi!", true));
+                })
                 .requestHandler(router::accept)
                 .listen(8080);
     }
