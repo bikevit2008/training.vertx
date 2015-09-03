@@ -2,7 +2,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Route;
-import io.vertx.ext.web.Router;
+import io.vertx.ext.web.Router; 
 
 /**
  * Created by vitaly on 07.08.15.
