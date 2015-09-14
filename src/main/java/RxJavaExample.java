@@ -2,11 +2,10 @@
  * Created by vitaly on 11.08.15.
  */
 import de.neuland.jade4j.Jade4J;
-import io.vertx.rxjava.core.*;
+import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.eventbus.EventBus;
 import io.vertx.rxjava.core.http.HttpServer;
 import io.vertx.rxjava.core.http.HttpServerResponse;
-
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,7 +13,6 @@ import java.util.Map;
 
 public class RxJavaExample {
 
-    private static final String ADDRESS = "websocket-test";
     public static void main(String[] args) {
 
         Vertx vertx = Vertx.vertx();
@@ -35,17 +33,14 @@ public class RxJavaExample {
                 e.printStackTrace();
             }
         });
+
         EventBus eb = vertx.eventBus();
 
         server.websocketStream().toObservable().subscribe(
                 socket -> {
                     socket.toObservable().subscribe(buffer -> {
                         System.out.println("Got message " + buffer.toString("UTF-8"));
-                        eb.consumer(ADDRESS).toObservable().subscribe(message -> {
-                            socket.writeFinalTextFrame(message.body().toString());
-                            System.out.println("Received " + message.body());
-                        });
-                        eb.publish(ADDRESS, buffer.toString("UTF-8"));
+                        eb.publish(socket.textHandlerID(), buffer.toString("UTF-8"));
                     });
 
                 },
