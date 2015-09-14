@@ -9,12 +9,13 @@ import io.vertx.rxjava.core.http.HttpServerResponse;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
 public class RxJavaExample {
-
+    public static String roomName = "123";
     public static void main(String[] args) {
-
+        Rooms.addNew(roomName);
         Vertx vertx = Vertx.vertx();
 
         HttpServer server = vertx.createHttpServer();
@@ -39,8 +40,12 @@ public class RxJavaExample {
         server.websocketStream().toObservable().subscribe(
                 socket -> {
                     socket.toObservable().subscribe(buffer -> {
+                        Room.addClient(roomName, socket.textHandlerID());
                         System.out.println("Got message " + buffer.toString("UTF-8"));
-                        eb.publish(socket.textHandlerID(), buffer.toString("UTF-8"));
+                        LinkedHashSet<String> room = Rooms.get(roomName);
+                        for(String client:room){
+                            eb.publish(client, buffer.toString("UTF-8"));
+                        }
                     });
 
                 },
