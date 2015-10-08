@@ -1,0 +1,262 @@
+html(xmlns='http://www.w3.org/1999/xhtml')
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    title OnPlay: совместный просмотр видео и фильмов
+    link(rel='stylesheet', href='http://getbootstrap.com/dist/css/bootstrap.min.css')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    script(src='./OnPlay  посмотри видео вместе с друзьями_files/jquery.min.js')
+    style.
+    style.
+      body {
+      overflow-x:hidden;
+      }
+      div.input-url, div.room-url {
+      float:none;
+      margin:0 auto;
+      padding-top:.6%;
+      padding-bottom:.6%;
+      }
+      div.input-url>label, div.room-url>label {
+      padding:.5%;
+      }
+      div.room-url>p {
+      font-size:24px;
+      }
+      div.room-url>p:last-child {
+      margin-bottom:0;
+      }
+      div.room-url>p>span{
+      color:#29A8DA;
+      }
+      nav.menu {
+      min-height:75px;
+      background:rgba(255,255,255,.5);
+      padding:12.5px;
+      }
+      .navbar-default .navbar-nav>li>a  {
+      color:#1BA0D5;
+      font-size:1.2em;
+      }
+      div.banner {
+      width:100%;
+      height:auto;
+      background:rgb(27, 160, 213) url(bg.jpg) no-repeat -41px -75px;
+      padding:3.5% 0;
+      }
+      div.banner>.container {
+      color:white;
+      padding:5%;
+      }
+      .input-group-lg>.form-control, .input-group-lg>.input-group-addon, .input-group-lg>.input-group-btn>.btn {
+      min-height:60px;
+      }
+      h1 {
+      text-align:center;
+      margin-bottom:20px;
+      }
+      input.form-control {
+      color:#1BA0D5;
+      }
+      input.form-control::-webkit-input-placeholder {
+      color:#1BA0D5;
+      }
+      input.form-control::-moz-placeholder {
+      color:#1BA0D5;
+      }
+      div.separator {
+      height: 20px;
+      background: rgb(219, 237, 244);
+      }
+      div.benefit {
+      text-align:center;
+      padding:3.7%;
+      font-size:1.2em;
+      color:#1BA0D5;
+      }
+      div.benefit>svg {
+      fill:#1BA0D5;
+      }
+      div.benefit>#link_1 {
+      margin-bottom:-4%;
+      }
+      footer {
+      text-align:center;
+      background:rgb(219, 237, 244);
+      padding:.7%;
+      bottom:0;
+      width:100%;
+      line-height:1.7;
+      color:#1BA0D5;
+      margin-top:1%;
+      }
+    script(type='text/javascript').
+      var socket;
+      if (!window.WebSocket) {
+      window.WebSocket = window.MozWebSocket;
+      }
+      if (window.WebSocket) {
+      socket = new WebSocket("ws://" + window.location.host + "/websocket/");
+      socket.onmessage = function(event) {
+      var parsed = JSON.parse(event.data);
+      if(parsed.method == "RoomLink"){
+      var result = document.getElementById('result');
+      result.innerHTML = window.location + "room/"+ parsed.value;
+      var resultLink = document.getElementById('result-link');
+      resultLink.href = "/room/"+ parsed.value;}
+      };
+      socket.onopen = function(event) {
+      };
+      socket.onclose = function(event) {
+      };
+      } else {
+      alert("Your browser does not support Web Socket.");
+      }
+      function send(message) {
+      if (!window.WebSocket) { return; }
+      if (socket.readyState == WebSocket.OPEN) {
+      socket.send(message);
+      } else {
+      alert("The socket is not open.");
+      }
+      }
+      function sendId() {
+      var parser = document.createElement('a');
+      parser.href = document.getElementById('link').value;
+      var result = document.getElementById('result').innerHTML;
+      result = parseId(endsWith(parser.pathname));
+      if(result.length > 0){
+      send(JSON.stringify({'method' : 'VideoId', 'value': result}));
+      }
+      }
+      function endsWith(str){
+      if(str.lastIndexOf("/") == str.length - 1){
+      return str.substring(0, str.length - 2);
+      }
+      else{
+      return str;
+      }
+      }
+      function parseId(str){
+      var out = str.substring(str.lastIndexOf("/") + 1);
+      return out;
+      }
+  body
+    header
+      .row
+        nav.navbar-default.menu
+          .container
+            .navbar-header
+              a.navbar-brand(href='/', style='padding: 0 0 0 15px;')
+                svg(xmlns='http://www.w3.org/2000/svg', width='100', height='50')
+                  g
+                    title background
+                    rect#canvas_background(fill='none', height='52', width='102', y='-1', x='-1')
+                    g#canvasGrid(display='none', overflow='visible', y='0', x='0', height='100%', width='100%')
+                      rect(fill='url(#gridpattern)', stroke-width='0', y='0', x='0', height='100%', width='100%')
+                  g
+                    title Layer 1
+                    ellipse#svg_6(stroke-dasharray='5,5', ry='19.062497', rx='19.062497', cy='23.9375', cx='47.375004', stroke-width='1.5', stroke='#ffffff', fill='#24b7f2')
+                    line#svg_10(stroke-linecap='null', stroke-linejoin='null', y2='37.499998', x2='42.6875', y1='13.125002', x1='40.187501', stroke-width='1.5', stroke='#ffffff', fill='none')
+                    line#svg_12(stroke-linecap='null', stroke-linejoin='null', y2='23.25', x2='58.062498', y1='13.250002', x1='40.187501', stroke-width='1.5', stroke='#ffffff', fill='none')
+                    line#svg_13(stroke-linecap='null', stroke-linejoin='null', y2='36.624998', x2='42.8125', y1='23.125', x1='57.812498', stroke-width='1.5', stroke='#ffffff', fill='none')
+                    text#svg_16(stroke='#000000', transform='matrix(0.9835922179106751,0,0,0.9779735803604126,-3.3495292350167274,0.8101592473685741) ', xml:space='preserve', text-anchor='left', font-family='Helvetica, Arial, sans-serif', font-size='24', y='30.874999', x='3.437507', stroke-dasharray='5,5', stroke-width='0', fill='#24b7f2') on
+            .collapse.navbar-collapse
+              ul.nav.navbar-nav.pull-right
+                li
+                  a(href='/') Главная
+                li
+                  a(href='/') Связаться с нами
+    .content
+      .banner
+        .container
+          .row
+            h1 Совместный просмотр видео и фильмов
+          .row
+            .input-url.col-lg-8.col-xs-12
+              .input-group.input-group-lg
+                input.form-control(type='text', placeholder='Ссылка на видео с youtube или vimeo', aria-describedby='Ссылка на видео с youtube или vimeo')
+                span.input-group-btn
+                  button#send.btn.btn-default(type='button', onclick='sendId()') >>
+              label.visible-lg-block.visible-md-block Например: https://www.youtube.com/watch?v=Scxs7L0vhZ4
+      .row.separator
+      .row
+        .container
+          .col-lg-4.col-sm-4.benefit
+            svg#Link_1(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', x='0px', y='0px', width='68px', height='68px', viewbox='0 0 450 450', xml:space='preserve')
+              g
+                g
+                  g
+                    path(d='M443.825,327.94l-61.494-61.493c-3.779-3.778-8.636-5.815-13.582-6.125l-14.901-14.905 c17.283-27.474,13.977-64.289-9.924-88.187c-27.742-27.744-72.88-27.744-100.624,0c-27.744,27.741-27.744,72.881,0,100.624 c23.901,23.897,60.712,27.206,88.188,9.924l14.902,14.902c0.312,4.944,2.347,9.804,6.125,13.582l61.493,61.494 c8.235,8.233,21.58,8.23,29.815,0C452.058,349.522,452.059,336.175,443.825,327.94z M329.016,242.948 c-19.522,19.521-51.287,19.521-70.809,0c-19.521-19.527-19.521-51.288-0.002-70.813c19.522-19.521,51.285-19.521,70.811,0.002 C348.538,191.661,348.538,223.423,329.016,242.948z')
+                    path(d='M34.695,190.037v-81.215h369.909v81.215h-25.37c0.545,2.689,0.978,5.408,1.268,8.151 c0.514,4.864,0.614,9.749,0.321,14.599h46.1c6.836,0,12.378-5.541,12.378-12.376V98.447c0-6.836-5.542-12.378-12.378-12.378 H12.377C5.541,86.069,0,91.611,0,98.447V200.41c0,6.835,5.541,12.376,12.377,12.376h192.435 c-0.448-7.606,0.076-15.256,1.581-22.75L34.695,190.037L34.695,190.037z')
+                    path(d='M89.344,125.592c2.286,0,4.146-1.862,4.146-4.146c0-2.287-1.86-4.146-4.146-4.146h-9.857 c-1.09,0-2.121,0.423-2.902,1.192l-0.728,0.711l-0.727-0.711c-0.781-0.769-1.812-1.192-2.901-1.192h-9.856 c-2.288,0-4.146,1.859-4.146,4.146c0,2.285,1.859,4.146,4.146,4.146h9.34v47.675h-9.34c-2.288,0-4.146,1.859-4.146,4.144 c0,2.287,1.859,4.146,4.146,4.146h9.856c1.09,0,2.121-0.421,2.901-1.191l0.727-0.713l0.726,0.713 c0.783,0.77,1.813,1.191,2.904,1.191h9.857c2.286,0,4.146-1.86,4.146-4.146c0-2.285-1.86-4.144-4.146-4.144h-9.34v-47.675H89.344 z')
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+            h2 1
+            p Вы вставляете ссылку на видео с видеохостинга YouTube или Vimeo
+          .col-lg-4.col-sm-4.benefit
+            svg#Player_1(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', x='0px', y='0px', width='54px', height='54px', viewbox='0 0 491.977 491.977', xml:space='preserve')
+              g
+                g
+                  path(d='M470.949,0H21.026C9.413,0,0,9.413,0,21.026v449.925c0,11.613,9.413,21.025,21.026,21.025h449.925 c11.613,0,21.025-9.412,21.025-21.025V21.026C491.977,9.413,482.562,0,470.949,0z M452.229,452.059H156.321v4.467 c0,7.549-6.119,13.668-13.667,13.668s-13.667-6.119-13.667-13.668v-4.467H39.748v-23.055h89.24v-5.447 c0-7.549,6.119-13.668,13.667-13.668s13.667,6.119,13.667,13.668v5.447h295.907V452.059z M458.977,389.23H32.999V27.749h425.979 V389.23H458.977z')
+                  path(d='M245.988,56.489c-85.467,0-155,69.533-155,155c0,85.466,69.533,155,155,155c85.467,0,155-69.533,155-155 C400.988,126.022,331.455,56.489,245.988,56.489z M308.957,225.367l-75.19,54.61c-2.985,2.168-6.524,3.273-10.08,3.273 c-2.659,0-5.328-0.617-7.786-1.869c-5.746-2.93-9.363-8.833-9.363-15.281V156.88c0-6.449,3.617-12.354,9.363-15.281 c5.745-2.929,12.648-2.387,17.866,1.404l75.19,54.609c4.443,3.227,7.072,8.386,7.072,13.877 C316.029,216.982,313.4,222.14,308.957,225.367z')
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+            h2 2
+            p
+              | Мы создаем для вас отдельную комнату с видеоплеером, куда вы приглашаете друзей и знакомых
+          .col-lg-4.col-sm-4.benefit
+            svg#Sync_1(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', x='0px', y='0px', width='55px', height='57px', viewbox='0 0 97.758 97.758', xml:space='preserve')
+              g
+                g
+                  path(d='M23.442,64.328H7.468c-1.105,0-2.105,0.937-2.105,2.05v27.955c0,1.104,1,1.991,2.105,1.991h0.051h15.874h0.049 c1.105,0,2.057-0.887,2.057-1.991V66.378C25.498,65.264,24.547,64.328,23.442,64.328z M21.545,88.23H9.5V68.277h12.045V88.23z')
+                  path(d='M63.208,77.97l-7.755-6.17c0.462-1.153,0.753-2.414,0.753-3.739c0-4.492-3.042-8.298-6.995-9.58v-8.34 c0-1.668-1.346-3.02-3.011-3.02c-1.661,0-3.008,1.352-3.008,3.02v8.34c-4.145,1.274-7.065,5.082-7.065,9.58 c0,1.247,0.204,2.437,0.617,3.531l-8.329,6.338c-1.325,1.01-1.585,2.896-0.578,4.229c0.597,0.773,1.49,1.185,2.398,1.185 c0.639,0,1.28-0.199,1.824-0.614l8.392-6.387c1.616,1.113,3.57,1.762,5.679,1.762c2.029,0,3.921-0.604,5.501-1.645l7.823,6.229 c0.558,0.44,1.217,0.654,1.875,0.654c0.888,0,1.765-0.387,2.362-1.135C64.727,80.902,64.512,79.007,63.208,77.97z')
+                  path(d='M94.764,63.572H69.332c-1.641,0-2.969,1.242-2.969,2.883v19.844c0,1.646,1.328,3.042,2.969,3.042h10.505v3.283h-3.901 c-1.494,0-2.774,1.211-2.774,2.698v1.752h17.8v-1.752c0-1.486-1.146-2.698-2.636-2.698h-4.039v-3.283h10.478 c1.641,0,2.994-1.396,2.994-3.042V66.455C97.758,64.814,96.404,63.572,94.764,63.572z M93.301,84.891H70.773V68.027h22.527V84.891 z')
+                  path(d='M20.004,54.639h19.247v-4.498c0-3.838,3.117-6.96,6.949-6.96c3.833,0,6.952,3.122,6.952,6.96v4.498h18.414 c11.029,0,20.003-8.974,20.003-20.003c0-10.443-8.044-19.042-18.261-19.928c-0.694-0.06-1.332-0.415-1.748-0.974 c-3.733-5.019-9.705-8.112-16.059-8.112c-0.386,0-0.773,0.011-1.16,0.034c-0.576,0.033-1.144-0.139-1.604-0.485 c-3.871-2.911-8.556-4.487-13.463-4.487c-8.792,0-16.597,5.082-20.263,12.783c-0.351,0.738-1.049,1.251-1.858,1.367 C7.469,16.223,0,24.574,0,34.636C0,45.665,8.974,54.639,20.004,54.639z')
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+              g
+            h2 3
+            p
+              | Плеер в комнате синхронизирован: плей, пауза или перемотка будет одновременна для каждого
+    footer
+      .row
+        .col-lg-12
+          p © OnPlay, 2015

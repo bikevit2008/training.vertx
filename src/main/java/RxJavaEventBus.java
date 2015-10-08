@@ -13,7 +13,9 @@ public class RxJavaEventBus {
         Vertx vertx = Vertx.vertx();
         EventBus eb = vertx.eventBus();
 
+
         eb.consumer(ADDRESS)
+
                 .toObservable()
                 .subscribe(message -> {
                     System.out.println("Received " + message.body());

@@ -2,8 +2,6 @@ import de.neuland.jade4j.Jade4J;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
-import io.vertx.core.http.WebSocketBase;
-import io.vertx.core.http.WebSocketFrame;
 import io.vertx.ext.web.Router;
 
 import java.io.IOException;
