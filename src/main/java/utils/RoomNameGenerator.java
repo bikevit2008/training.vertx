@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class RoomNameGenerator {
 
+    
     public static String generate(int from, int to) {
         String pass = "";
         Random r = new Random();
