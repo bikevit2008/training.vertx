@@ -1,8 +1,7 @@
 /**
  * Created by vitaly on 11.08.15.
  */
-import database.manageClients.Room;
-import database.manageClients.Rooms;
+import database.databaseUse;
 import de.neuland.jade4j.Jade4J;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.eventbus.EventBus;
@@ -11,6 +10,8 @@ import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.Route;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.handler.StaticHandler;
+import database.manageClients.Room;
+import database.manageClients.Rooms;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class RxJavaExample {
         Rooms.addNew(roomName);
        // System.out.println(ConcurrentNavigableMaps.data);
        // ConcurrentNavigableMaps.addNew("bikevit2008");
-//        System.out.println(databaseUse.getAll(""));
+        System.out.println(databaseUse.getAll(""));
         Vertx vertx = Vertx.vertx();
 
         Router router = Router.router(vertx);
