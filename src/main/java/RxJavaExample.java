@@ -18,12 +18,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 
 public class RxJavaExample {
-    public static String roomName = "123";
+    public static LinkedHashSet<String> room = new LinkedHashSet<String>();
     public static void main(String[] args) {
-        Rooms.addNew(roomName);
-       // System.out.println(ConcurrentNavigableMaps.data);
-       // ConcurrentNavigableMaps.addNew("bikevit2008");
-//        System.out.println(databaseUse.getAll(""));
         Vertx vertx = Vertx.vertx();
 
         Router router = Router.router(vertx);
@@ -56,7 +52,7 @@ public class RxJavaExample {
 
             // Write to the response and end it
             try {
-                String html = Jade4J.render("web/templates/websocket.jade", model);
+                String html = Jade4J.render("web/templates/room.jade", model);
 
                 resp.end(html);
             } catch (IOException e) {
@@ -87,9 +83,9 @@ public class RxJavaExample {
         server.websocketStream().toObservable().subscribe(
                 socket -> {
                     socket.toObservable().subscribe(buffer -> {
-                        Room.addClient(roomName, socket.textHandlerID());
                         System.out.println("Got message " + buffer.toString("UTF-8"));
-                        LinkedHashSet<String> room = Rooms.get(roomName);
+                        room.add(socket.textHandlerID());
+                        System.out.println(socket.textHandlerID());
                         for(String client:room){
                             eb.publish(client, buffer.toString("UTF-8"));
                         }
