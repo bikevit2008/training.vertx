@@ -3,7 +3,6 @@ package server;
 import controller.HomeHandler;
 import controller.RoomHandler;
 import controller.forms.post.CreateRoomHandler;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.web.Route;
 import io.vertx.rxjava.ext.web.Router;
