@@ -7,9 +7,11 @@ import model.entity.User;
  */
 public interface UserDao {
 
-    boolean insertUser(User user);
+    User insertUser(User user);
 
-    boolean removeUser(User user);
+    User removeUser(User user);
+
+    User removeUserById(String id);
 
     User updateUser(User user);
 
