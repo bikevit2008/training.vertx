@@ -2,6 +2,8 @@ package server;
 
 import controller.HomeHandler;
 import controller.RoomHandler;
+import controller.forms.post.CreateRoomHandler;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.web.Route;
 import io.vertx.rxjava.ext.web.Router;
@@ -34,13 +36,7 @@ public class MainServer {
         Route resources = router.route().path("/*");
         resources.handler(StaticHandler.create().setWebRoot("web/static"));
 
-        // handle the form
-        router.post("/createRoom").handler(ctx -> {
-            System.out.println("Link value: " + ctx.request().getFormAttribute("linkValue"));
-            ctx.response().setStatusCode(301);
-            ctx.response().putHeader("Location", "/room/gg");
-            ctx.response().end();
-        });
+        router.post("/createRoom").handler(new CreateRoomHandler());
 
         System.out.println("Listen 8080 port ...");
         vertx.createHttpServer().requestHandler(router::accept).listen(8080);
