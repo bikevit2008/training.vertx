@@ -18,10 +18,6 @@ public class User implements Serializable, Comparable<User> {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Override
     public String toString() {
         return "User{" +

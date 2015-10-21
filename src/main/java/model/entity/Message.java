@@ -1,9 +1,11 @@
 package model.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by denis on 13/10/15.
  */
-public class Message {
+public class Message implements Serializable{
 
     private int id;
     private String text;

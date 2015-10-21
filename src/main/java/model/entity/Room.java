@@ -1,13 +1,14 @@
 package model.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by denis on 13/10/15.
  */
-public class Room {
+public class Room implements Serializable, Comparable<Room> {
 
-    private int id;
+    private Integer id;
     private List<User> users;
     private List<Message> messages;
 
@@ -42,7 +43,7 @@ public class Room {
         this.messages.add(message);
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -52,5 +53,10 @@ public class Room {
 
     public List<Message> getMessages() {
         return messages;
+    }
+
+    @Override
+    public int compareTo(Room room) {
+        return this.id.compareTo(room.getId());
     }
 }

@@ -19,7 +19,7 @@ public interface RoomService {
 
     Room removeRoom(Room room);
 
-    Room removeRoom(int id);
+    Room removeRoomById(int id);
 
     Room updateRoom(Room room);
 

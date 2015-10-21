@@ -32,7 +32,7 @@ public class RoomServiceImpl implements RoomService{
         return roomDao.removeRoom(room);
     }
 
-    public Room removeRoom(int id) {
+    public Room removeRoomById(int id) {
         return roomDao.removeRoomById(id);
     }
 
