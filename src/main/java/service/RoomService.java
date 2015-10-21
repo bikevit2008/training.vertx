@@ -11,15 +11,15 @@ import java.util.List;
  */
 public interface RoomService {
 
-    boolean addRoom(int id);
+    Room addRoom(int id);
 
-    boolean addRoom(int id, List<User> users);
+    Room addRoom(int id, List<User> users);
 
-    boolean addRoom(int id, List<User> users, List<Message> messages);
+    Room addRoom(int id, List<User> users, List<Message> messages);
 
-    boolean removeRoom(Room room);
+    Room removeRoom(Room room);
 
-    boolean removeRoom(int id);
+    Room removeRoom(int id);
 
     Room updateRoom(Room room);
 

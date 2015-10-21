@@ -16,23 +16,23 @@ public class RoomServiceImpl implements RoomService{
 
     RoomDao roomDao = DaoFactory.getRoomDao();
 
-    public boolean addRoom(int id) {
+    public Room addRoom(int id) {
         return addRoom(id, null, null);
     }
 
-    public boolean addRoom(int id, List<User> users) {
+    public Room addRoom(int id, List<User> users) {
         return addRoom(id, users, null);
     }
 
-    public boolean addRoom(int id, List<User> users, List<Message> messages) {
+    public Room addRoom(int id, List<User> users, List<Message> messages) {
         return roomDao.insertRoom(new Room(id, users, messages));
     }
 
-    public boolean removeRoom(Room room) {
+    public Room removeRoom(Room room) {
         return roomDao.removeRoom(room);
     }
 
-    public boolean removeRoom(int id) {
+    public Room removeRoom(int id) {
         return roomDao.removeRoomById(id);
     }
 

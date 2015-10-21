@@ -7,11 +7,11 @@ import model.entity.Room;
  */
 public interface RoomDao {
 
-    boolean insertRoom(Room room);
+    Room insertRoom(Room room);
 
-    boolean removeRoom(Room room);
+    Room removeRoom(Room room);
 
-    boolean removeRoomById(int id);
+    Room removeRoomById(int id);
 
     Room updateRoom(Room room);
 
