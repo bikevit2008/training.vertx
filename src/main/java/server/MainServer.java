@@ -28,7 +28,6 @@ public class MainServer {
         Route roomPage = router.route().path("/room/");
         roomPage.handler(new RoomHandler());
 
-
         Route resources = router.route().path("/*");
         resources.handler(StaticHandler.create().setWebRoot("web/static"));
 
