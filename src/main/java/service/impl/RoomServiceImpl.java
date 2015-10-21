@@ -12,19 +12,25 @@ import java.util.List;
 /**
  * Created by denis on 13/10/15.
  */
-public class RoomServiceImpl implements RoomService{
+public class RoomServiceImpl implements RoomService {
 
     RoomDao roomDao = DaoFactory.getRoomDao();
 
-    public Room addRoom(int id) {
+    @Override
+    public Room addRoom(Room room) {
+        return roomDao.insertRoom(room);
+    }
+
+    public Room addRoom(String id) {
         return addRoom(id, null, null);
     }
 
-    public Room addRoom(int id, List<User> users) {
+    public Room addRoom(String id, List<User> users) {
         return addRoom(id, users, null);
     }
 
-    public Room addRoom(int id, List<User> users, List<Message> messages) {
+    public Room addRoom(String id, List<User> users, List<Message> messages) {
+        if (id == null) throw new IllegalStateException("Room id can't be null");
         return roomDao.insertRoom(new Room(id, users, messages));
     }
 
@@ -32,7 +38,7 @@ public class RoomServiceImpl implements RoomService{
         return roomDao.removeRoom(room);
     }
 
-    public Room removeRoomById(int id) {
+    public Room removeRoomById(String id) {
         return roomDao.removeRoomById(id);
     }
 
@@ -40,7 +46,7 @@ public class RoomServiceImpl implements RoomService{
         return roomDao.updateRoom(room);
     }
 
-    public Room getRoomById(int id) {
+    public Room getRoomByUrl(String id) {
         return roomDao.findRoomById(id);
     }
 

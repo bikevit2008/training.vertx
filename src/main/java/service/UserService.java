@@ -7,6 +7,8 @@ import model.entity.User;
  */
 public interface UserService {
 
+    User updateUser(User user);
+
     User addUser(String id);
 
     User addUser(User user);

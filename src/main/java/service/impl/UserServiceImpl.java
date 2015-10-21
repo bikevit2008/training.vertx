@@ -13,12 +13,19 @@ public class UserServiceImpl implements UserService {
     UserDao userDao = DaoFactory.getUserDao();
 
     @Override
+    public User updateUser(User user) {
+        return userDao.updateUser(user);
+    }
+
+    @Override
     public User addUser(String id) {
+        if (id == null) throw new IllegalStateException("User id can't be null");
         return userDao.insertUser(new User(id));
     }
 
     @Override
     public User addUser(User user) {
+        if (user.getId() == null) throw new IllegalStateException("User id can't be null");
         return userDao.insertUser(user);
     }
 

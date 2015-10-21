@@ -11,18 +11,20 @@ import java.util.List;
  */
 public interface RoomService {
 
-    Room addRoom(int id);
+    Room addRoom(Room room);
 
-    Room addRoom(int id, List<User> users);
+    Room addRoom(String id);
 
-    Room addRoom(int id, List<User> users, List<Message> messages);
+    Room addRoom(String id, List<User> users);
+
+    Room addRoom(String id, List<User> users, List<Message> messages);
 
     Room removeRoom(Room room);
 
-    Room removeRoomById(int id);
+    Room removeRoomById(String id);
 
     Room updateRoom(Room room);
 
-    Room getRoomById(int id);
+    Room getRoomByUrl(String id);
 
 }

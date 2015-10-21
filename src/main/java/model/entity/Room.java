@@ -1,6 +1,7 @@
 package model.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,21 +9,21 @@ import java.util.List;
  */
 public class Room implements Serializable, Comparable<Room> {
 
-    private Integer id;
-    private List<User> users;
-    private List<Message> messages;
+    private String roomUrl;
+    private List<User> users = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
 
-    public Room(int id) {
-        this.id = id;
+    public Room(String roomUrl) {
+        this.roomUrl = roomUrl;
     }
 
-    public Room(int id, List<User> users) {
-        this.id = id;
+    public Room(String roomUrl, List<User> users) {
+        this.roomUrl = roomUrl;
         this.users = users;
     }
 
-    public Room(int id, List<User> users, List<Message> messages) {
-        this.id = id;
+    public Room(String roomUrl, List<User> users, List<Message> messages) {
+        this.roomUrl = roomUrl;
         this.users = users;
         this.messages = messages;
     }
@@ -43,8 +44,8 @@ public class Room implements Serializable, Comparable<Room> {
         this.messages.add(message);
     }
 
-    public Integer getId() {
-        return id;
+    public String getRoomUrl() {
+        return roomUrl;
     }
 
     public List<User> getUsers() {
@@ -57,6 +58,15 @@ public class Room implements Serializable, Comparable<Room> {
 
     @Override
     public int compareTo(Room room) {
-        return this.id.compareTo(room.getId());
+        return this.roomUrl.compareTo(room.getRoomUrl());
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "roomUrl='" + roomUrl + '\'' +
+                ", users=" + users +
+                ", messages=" + messages +
+                '}';
     }
 }

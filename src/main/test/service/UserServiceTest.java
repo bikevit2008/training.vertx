@@ -1,10 +1,10 @@
 package service;
 
+import model.dao.factory.ServiceFactory;
 import model.entity.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import service.impl.UserServiceImpl;
 
 import static org.junit.Assert.*;
 
@@ -13,8 +13,9 @@ import static org.junit.Assert.*;
  */
 public class UserServiceTest {
 
-    UserService userService = new UserServiceImpl();
-    String firstUserId = "firstUserId";;
+    UserService userService = ServiceFactory.getUserService();
+    String firstUserId = "firstUserId";
+    ;
     String secondUserId = "secondUserId";
     User firstUser = new User(firstUserId);
     User secondUser = new User(secondUserId);

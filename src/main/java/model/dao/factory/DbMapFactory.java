@@ -23,12 +23,13 @@ public class DbMapFactory {
     private static DB permanentDb = DBMaker.newFileDB(new File(PERMANENT_FILE_NAME)).closeOnJvmShutdown().make();
 
     private static final BTreeMap<String, User> users = transientDb.createTreeMap(USERS_TREE_NAME).make();
-    private static final BTreeMap<Integer, Room> rooms = permanentDb.createTreeMap(ROOMS_TREE_NAME).make();
+    private static final BTreeMap<String, Room> rooms = permanentDb.createTreeMap(ROOMS_TREE_NAME).make();
 
     public static BTreeMap<String, User> getUsersTreeMap() {
         return users;
     }
-    public static BTreeMap<Integer, Room> getRoomsTreeMap() {
+
+    public static BTreeMap<String, Room> getRoomsTreeMap() {
         return rooms;
     }
 

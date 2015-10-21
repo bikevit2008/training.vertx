@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by denis on 13/10/15.
  */
-public class Message implements Serializable{
+public class Message implements Serializable {
 
     private int id;
     private String text;
@@ -36,5 +36,14 @@ public class Message implements Serializable{
 
     public User getOwner() {
         return owner;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", owner=" + owner +
+                '}';
     }
 }

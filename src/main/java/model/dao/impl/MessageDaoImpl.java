@@ -3,10 +3,7 @@ package model.dao.impl;
 import model.dao.MessageDao;
 import model.entity.Message;
 import model.entity.User;
-import org.mapdb.DB;
-import org.mapdb.DBMaker;
 
-import java.io.File;
 import java.util.List;
 
 /**

@@ -10,31 +10,31 @@ import org.mapdb.BTreeMap;
  */
 public class RoomDaoImpl implements RoomDao {
 
-    BTreeMap<Integer, Room> rooms = DbMapFactory.getRoomsTreeMap();
+    BTreeMap<String, Room> rooms = DbMapFactory.getRoomsTreeMap();
 
 
     @Override
     public Room insertRoom(Room room) {
-        return rooms.putIfAbsent(room.getId(), room);
+        return rooms.putIfAbsent(room.getRoomUrl(), room);
     }
 
     @Override
     public Room removeRoom(Room room) {
-        return rooms.remove(room.getId());
+        return rooms.remove(room.getRoomUrl());
     }
 
     @Override
-    public Room removeRoomById(int id) {
+    public Room removeRoomById(String id) {
         return rooms.remove(id);
     }
 
     @Override
     public Room updateRoom(Room room) {
-        return rooms.replace(room.getId(), room);
+        return rooms.replace(room.getRoomUrl(), room);
     }
 
     @Override
-    public Room findRoomById(int id) {
+    public Room findRoomById(String id) {
         return rooms.get(id);
     }
 }

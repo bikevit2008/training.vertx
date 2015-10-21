@@ -11,11 +11,11 @@ public interface RoomDao {
 
     Room removeRoom(Room room);
 
-    Room removeRoomById(int id);
+    Room removeRoomById(String id);
 
     Room updateRoom(Room room);
 
-    Room findRoomById(int id);
+    Room findRoomById(String id);
 
 
 }

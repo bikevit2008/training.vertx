@@ -7,7 +7,9 @@ import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.web.Route;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.handler.BodyHandler;
+import io.vertx.rxjava.ext.web.handler.SessionHandler;
 import io.vertx.rxjava.ext.web.handler.StaticHandler;
+import io.vertx.rxjava.ext.web.sstore.LocalSessionStore;
 
 /**
  * Created by denis on 13/10/15.
@@ -25,6 +27,8 @@ public class MainServer {
         Router router = Router.router(vertx);
 
         router.route().handler(BodyHandler.create());
+
+        router.route().handler(SessionHandler.create(LocalSessionStore.create(vertx)));
 
         Route homePage = router.route().path("/");
         homePage.handler(new HomeHandler());

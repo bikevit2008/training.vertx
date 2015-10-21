@@ -1,8 +1,7 @@
 /**
  * Created by vitaly on 11.08.15.
  */
-import database.manageClients.Room;
-import database.manageClients.Rooms;
+
 import de.neuland.jade4j.Jade4J;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.eventbus.EventBus;
@@ -19,6 +18,7 @@ import java.util.Map;
 
 public class RxJavaExample {
     public static LinkedHashSet<String> room = new LinkedHashSet<String>();
+
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
 
@@ -36,7 +36,8 @@ public class RxJavaExample {
                 resp.end(html);
             } catch (IOException e) {
                 e.printStackTrace();
-            }        });
+            }
+        });
         Route routeRoom = router.route().path("/room/:roomUri/*");
         Route resources = router.route().path("/*");
 
@@ -58,7 +59,7 @@ public class RxJavaExample {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-                });
+        });
         router.route().handler(routingContext -> {
             routingContext.response().putHeader("content-type", "text/html").end("Not Found!");
         });
@@ -86,7 +87,7 @@ public class RxJavaExample {
                         System.out.println("Got message " + buffer.toString("UTF-8"));
                         room.add(socket.textHandlerID());
                         System.out.println(socket.textHandlerID());
-                        for(String client:room){
+                        for (String client : room) {
                             eb.publish(client, buffer.toString("UTF-8"));
                         }
                     });

@@ -1,5 +1,6 @@
 package service;
 
+import model.dao.factory.ServiceFactory;
 import model.entity.Message;
 import model.entity.Room;
 import model.entity.User;
@@ -7,7 +8,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import service.impl.RoomServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +19,8 @@ import static org.junit.Assert.*;
  */
 public class RoomServiceTest {
 
-    RoomService roomService = new RoomServiceImpl();
-    static Integer firstRoomId = 1;
+    RoomService roomService = ServiceFactory.getRoomService();
+    static String firstRoomUrl = "1";
     static List<User> users = new ArrayList<>();
     static List<Message> messages = new ArrayList<>();
     static String firstUserId = "1";
@@ -36,7 +36,7 @@ public class RoomServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        roomService.removeRoomById(firstRoomId);
+        roomService.removeRoomById(firstRoomUrl);
     }
 
     @After
@@ -46,44 +46,62 @@ public class RoomServiceTest {
 
     @Test
     public void testAddRoom() throws Exception {
-        Room room = roomService.addRoom(firstRoomId);
+        Room room = roomService.addRoom(firstRoomUrl);
         assertNull(room);
-        assertEquals(firstRoomId, roomService.getRoomById(firstRoomId).getId());
+        assertEquals(firstRoomUrl, roomService.getRoomByUrl(firstRoomUrl).getRoomUrl());
     }
 
     @Test
     public void testAddRoom1() throws Exception {
-        Room room = roomService.addRoom(firstRoomId, users);
+        Room room = roomService.addRoom(firstRoomUrl, users);
         assertNull(room);
-        assertEquals(firstRoomId, roomService.getRoomById(firstRoomId).getId());
-        assertEquals(users, roomService.getRoomById(firstRoomId).getUsers());
+        assertEquals(firstRoomUrl, roomService.getRoomByUrl(firstRoomUrl).getRoomUrl());
+        assertEquals(users, roomService.getRoomByUrl(firstRoomUrl).getUsers());
     }
 
     @Test
     public void testAddRoom2() throws Exception {
-        Room room = roomService.addRoom(firstRoomId, users, messages);
+        Room room = roomService.addRoom(firstRoomUrl, users, messages);
         assertNull(room);
-        assertEquals(firstRoomId, roomService.getRoomById(firstRoomId).getId());
-        assertEquals(users, roomService.getRoomById(firstRoomId).getUsers());
-        assertEquals(messages, roomService.getRoomById(firstRoomId).getMessages());
+        assertEquals(firstRoomUrl, roomService.getRoomByUrl(firstRoomUrl).getRoomUrl());
+        assertEquals(users, roomService.getRoomByUrl(firstRoomUrl).getUsers());
+        assertEquals(messages, roomService.getRoomByUrl(firstRoomUrl).getMessages());
     }
 
     @Test
     public void testRemoveRoom() throws Exception {
-        Room room = roomService.addRoom(firstRoomId, users, messages);
+        Room room = roomService.addRoom(firstRoomUrl, users, messages);
         assertNull(room);
-        assertEquals(firstRoomId, roomService.getRoomById(firstRoomId).getId());
-        roomService.removeRoomById(firstRoomId);
-        assertNull(roomService.getRoomById(firstRoomId));
+        assertEquals(firstRoomUrl, roomService.getRoomByUrl(firstRoomUrl).getRoomUrl());
+        roomService.removeRoomById(firstRoomUrl);
+        assertNull(roomService.getRoomByUrl(firstRoomUrl));
     }
 
     @Test
-    public void testRemoveRoom1() throws Exception {
-        Room room = roomService.addRoom(firstRoomId, users, messages);
+    public void testRemoveRoomById() throws Exception {
+        Room room = roomService.addRoom(firstRoomUrl, users, messages);
         assertNull(room);
-        Room returnedRoom = roomService.getRoomById(firstRoomId);
-        assertEquals(firstRoomId, returnedRoom.getId());
+        Room returnedRoom = roomService.getRoomByUrl(firstRoomUrl);
+        assertEquals(firstRoomUrl, returnedRoom.getRoomUrl());
         roomService.removeRoom(returnedRoom);
-        assertNull(roomService.getRoomById(firstRoomId));
+        assertNull(roomService.getRoomByUrl(firstRoomUrl));
+    }
+
+    @Test
+    public void testUpdateRoom() throws Exception {
+        Room room = roomService.addRoom(firstRoomUrl, users, messages);
+        assertNull(room);
+        Room returnedRoom = roomService.getRoomByUrl(firstRoomUrl);
+        returnedRoom.getUsers().remove(1);
+        Room updatedRoom = roomService.updateRoom(returnedRoom);
+        assertEquals(users.size(), updatedRoom.getUsers().size());
+    }
+
+    @Test
+    public void testGetRoomById() throws Exception {
+        Room room = roomService.addRoom(firstRoomUrl, users, messages);
+        assertNull(room);
+        Room returnedRoom = roomService.getRoomByUrl(firstRoomUrl);
+        assertEquals(firstRoomUrl, returnedRoom.getRoomUrl());
     }
 }
