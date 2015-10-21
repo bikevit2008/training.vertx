@@ -20,6 +20,7 @@ public class DbMapFactory {
     private static final String ROOMS_TREE_NAME = "rooms";
 
     private static DB transientDb = DBMaker.newFileDB(new File(TRANSIENT_FILE_NAME)).closeOnJvmShutdown().make();
+    //TODO Don't delete on shutdown in production
     private static DB permanentDb = DBMaker.newFileDB(new File(PERMANENT_FILE_NAME)).closeOnJvmShutdown().make();
 
     private static final BTreeMap<String, User> users = transientDb.createTreeMap(USERS_TREE_NAME).make();
