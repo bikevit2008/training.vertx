@@ -2,7 +2,6 @@
  * Created by vitaly on 11.08.15.
  */
 
-import database.manageClients.Room;
 import de.neuland.jade4j.Jade4J;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.eventbus.EventBus;
@@ -11,7 +10,6 @@ import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.Route;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.handler.StaticHandler;
-import model.entity.User;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -20,10 +18,10 @@ import java.util.Map;
 
 public class RxJavaExample {
 
-    public static User user = null;
-    public static Room room = null;
+//    public static User user = null;
+//    public static Room room = null;
 
-   // public static LinkedHashSet<String> room = new LinkedHashSet<String>();
+   public static LinkedHashSet<String> room = new LinkedHashSet<String>();
 
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
@@ -92,13 +90,13 @@ public class RxJavaExample {
 
                         socket.closeHandler(handler -> {
 
-                            room.removeUser(user);
+          //                  room.removeClient(user);
 
                         });
 
                         socket.toObservable().subscribe(buffer -> {
                         System.out.println("Got message " + buffer.toString("UTF-8"));
-                        room.add(socket.textHandlerID());
+               //         room.add(socket.textHandlerID());
                         System.out.println(socket.textHandlerID());
                         for (String client : room) {
                             eb.publish(client, buffer.toString("UTF-8"));
