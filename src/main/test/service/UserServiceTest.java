@@ -1,10 +1,10 @@
 package service;
 
-import model.dao.factory.ServiceFactory;
 import model.entity.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import service.factory.ServiceFactory;
 
 import static org.junit.Assert.*;
 

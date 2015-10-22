@@ -1,4 +1,4 @@
-package model.dao.factory;
+package service.factory;
 
 import service.RoomService;
 import service.UserService;

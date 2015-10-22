@@ -1,6 +1,5 @@
 package service;
 
-import model.dao.factory.ServiceFactory;
 import model.entity.Message;
 import model.entity.Room;
 import model.entity.User;
@@ -8,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import service.factory.ServiceFactory;
 
 import java.util.ArrayList;
 import java.util.List;
