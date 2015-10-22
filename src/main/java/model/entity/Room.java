@@ -12,7 +12,7 @@ public class Room implements Serializable, Comparable<Room> {
     private String roomUrl;
     private List<User> users = new ArrayList<>();
     private List<Message> messages = new ArrayList<>();
-    private PlayStatus videoStatus;
+    private PlayStatus playStatus;
     private Long time;
 
     public Room(String roomUrl) {
@@ -66,12 +66,12 @@ public class Room implements Serializable, Comparable<Room> {
         this.time = time;
     }
 
-    public PlayStatus getVideoStatus() {
-        return videoStatus;
+    public PlayStatus getPlayStatus() {
+        return playStatus;
     }
 
-    public void setVideoStatus(PlayStatus videoStatus) {
-        this.videoStatus = videoStatus;
+    public void setPlayStatus(PlayStatus playStatus) {
+        this.playStatus = playStatus;
     }
 
     @Override
