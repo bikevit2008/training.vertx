@@ -10,7 +10,7 @@ import org.mapdb.BTreeMap;
  */
 public class RoomDaoImpl implements RoomDao {
 
-    BTreeMap<String, Room> rooms = DbMapFactory.getRoomsTreeMap();
+    private BTreeMap<String, Room> rooms = DbMapFactory.getRoomsTreeMap();
 
 
     @Override

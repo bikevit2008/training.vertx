@@ -10,7 +10,7 @@ import service.UserService;
  */
 public class UserServiceImpl implements UserService {
 
-    UserDao userDao = DaoFactory.getUserDao();
+    private UserDao userDao = DaoFactory.getUserDao();
 
     @Override
     public User updateUser(User user) {

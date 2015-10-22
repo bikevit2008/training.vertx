@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class RoomServiceImpl implements RoomService {
 
-    RoomDao roomDao = DaoFactory.getRoomDao();
+    private RoomDao roomDao = DaoFactory.getRoomDao();
 
     @Override
     public Room addRoom(Room room) {

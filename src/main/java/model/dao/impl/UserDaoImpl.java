@@ -10,7 +10,7 @@ import org.mapdb.BTreeMap;
  */
 public class UserDaoImpl implements UserDao {
 
-    BTreeMap<String, User> users = DbMapFactory.getUsersTreeMap();
+    private BTreeMap<String, User> users = DbMapFactory.getUsersTreeMap();
 
     @Override
     public User insertUser(User user) {
