@@ -9,13 +9,27 @@ import java.util.Objects;
 public class User implements Serializable, Comparable<User> {
 
     private String id;
+    private String nickName;
 
     public User(String id) {
         this.id = id;
     }
 
+    public User(String id, String nickName) {
+        this.id = id;
+        this.nickName = nickName;
+    }
+
     public String getId() {
         return id;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     @Override

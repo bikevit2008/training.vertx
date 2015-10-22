@@ -12,6 +12,8 @@ public class Room implements Serializable, Comparable<Room> {
     private String roomUrl;
     private List<User> users = new ArrayList<>();
     private List<Message> messages = new ArrayList<>();
+    private PlayStatus videoStatus;
+    private Long time;
 
     public Room(String roomUrl) {
         this.roomUrl = roomUrl;
@@ -54,6 +56,22 @@ public class Room implements Serializable, Comparable<Room> {
 
     public List<Message> getMessages() {
         return messages;
+    }
+
+    public Long getTime() {
+        return time;
+    }
+
+    public void setTime(Long time) {
+        this.time = time;
+    }
+
+    public PlayStatus getVideoStatus() {
+        return videoStatus;
+    }
+
+    public void setVideoStatus(PlayStatus videoStatus) {
+        this.videoStatus = videoStatus;
     }
 
     @Override

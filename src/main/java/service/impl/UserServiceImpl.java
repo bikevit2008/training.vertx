@@ -24,6 +24,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User addUser(String id, String nickName) {
+        if (id == null) throw new IllegalStateException("User id can't be null");
+        if (nickName == null) throw new IllegalStateException("Don't use empty nick name");
+        return userDao.insertUser(new User(id, nickName));
+    }
+
+    @Override
     public User addUser(User user) {
         if (user.getId() == null) throw new IllegalStateException("User id can't be null");
         return userDao.insertUser(user);

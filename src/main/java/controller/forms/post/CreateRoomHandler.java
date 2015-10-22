@@ -15,18 +15,14 @@ import service.factory.ServiceFactory;
 public class CreateRoomHandler implements Handler<RoutingContext> {
 
     private RoomService roomService = ServiceFactory.getRoomService();
-    private UserService userService = ServiceFactory.getUserService();
+
 
     @Override
     public void handle(RoutingContext routingContext) {
         String linkValue = routingContext.request().getFormAttribute("linkValue");
-        Session session = routingContext.session();
 
-        User user = new User(session.id());
         Room room = new Room(linkValue);
-        room.addUser(user);
 
-        userService.addUser(user);
         roomService.addRoom(room);
 
         routingContext.response().setStatusCode(301);
