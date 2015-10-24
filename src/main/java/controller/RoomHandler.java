@@ -30,14 +30,14 @@ public class RoomHandler implements Handler<RoutingContext> {
         HttpServerResponse resp = routingContext.response();
         resp.putHeader("content-type", "text/html");
         Map<String, Object> model = new HashMap<String, Object>();
-        Session session = routingContext.session();
+/*        Session session = routingContext.session();
 
         Room room = roomService.getRoomByUrl(roomUri);
         User user = new User(session.id());
         room.addUser(user);
         roomService.updateRoom(room);
         userService.addUser(user);
-
+*/
 
 
         // Write to the response and end it

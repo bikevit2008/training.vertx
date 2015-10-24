@@ -4,6 +4,8 @@ import controller.HomeHandler;
 import controller.RoomHandler;
 import controller.forms.post.CreateRoomHandler;
 import io.vertx.rxjava.core.Vertx;
+import io.vertx.rxjava.core.eventbus.EventBus;
+import io.vertx.rxjava.core.http.HttpServer;
 import io.vertx.rxjava.ext.web.Route;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.handler.BodyHandler;
@@ -41,7 +43,32 @@ public class MainServer {
 
         router.post("/createRoom").handler(new CreateRoomHandler());
 
+
+
         System.out.println("Listen 8080 port ...");
-        vertx.createHttpServer().requestHandler(router::accept).listen(8080);
+        HttpServer server = vertx.createHttpServer();
+
+        server.websocketStream().toObservable().subscribe(
+                socket -> {
+
+                    socket.closeHandler(handler -> {
+
+                       System.out.println("Client: " + socket.textHandlerID() + " Disconnected.");
+
+                    });
+
+                    socket.toObservable().subscribe(buffer -> {
+                        System.out.println("Got message " + buffer.toString("UTF-8"));
+                        //         room.add(socket.textHandlerID());
+                        System.out.println(socket.textHandlerID());
+                    });
+
+                },
+                failure -> System.out.println("Should never be called"),
+                () -> {
+                    System.out.println("Subscription ended or server closed");
+                });
+
+        server.requestHandler(router::accept).listen(8080);
     }
 }

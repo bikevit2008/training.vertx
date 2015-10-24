@@ -2,6 +2,7 @@
  * Created by vitaly on 11.08.15.
  */
 
+import controller.WebSocketHandler;
 import de.neuland.jade4j.Jade4J;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.eventbus.EventBus;
@@ -11,6 +12,7 @@ import io.vertx.rxjava.ext.web.Route;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.handler.StaticHandler;
 
+import javax.jws.WebService;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -84,34 +86,7 @@ public class RxJavaExample {
         server.requestStream().toObservable().subscribe(router::accept);
 
         EventBus eb = vertx.eventBus();
-
-        server.websocketStream().toObservable().subscribe(
-                socket -> {
-
-                        socket.closeHandler(handler -> {
-
-          //                  room.removeClient(user);
-
-                        });
-
-                        socket.toObservable().subscribe(buffer -> {
-                        System.out.println("Got message " + buffer.toString("UTF-8"));
-               //         room.add(socket.textHandlerID());
-                        System.out.println(socket.textHandlerID());
-                        for (String client : room) {
-                            eb.publish(client, buffer.toString("UTF-8"));
-                        }
-                    });
-
-                },
-                failure -> System.out.println("Should never be called"),
-                () -> {
-                    System.out.println("Subscription ended or server closed");
-                }
-
-
-
-        );
+        server.websocketHandler(new WebSocketHandler());
         server.listenObservable(8080);
     }
 }
