@@ -34,7 +34,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
             form(method='post', action='/createRoom')
               .input-url.col-lg-8.col-xs-12
                 .input-group.input-group-lg
-                  input.form-control(type='text', name='linkValue', placeholder='Ссылка на видео с youtube или vimeo', aria-describedby='Ссылка на видео с youtube или vimeo')
+                  input.form-control.validationLink(type='text', name='linkValue', placeholder='Ссылка на видео с youtube', aria-describedby='Ссылка на видео с youtube или vimeo')
                   span.input-group-btn
                     button.btn.btn-default(type='submit') >>
                 label.visible-lg-block.visible-md-block Например: https://www.youtube.com/watch?v=Scxs7L0vhZ4
@@ -115,7 +115,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
               g
             h2 3
             p
-              | Плеер в комнате синхронизирован: плей, пауза или перемотка одновременна для каждого
+              | Плеер в комнате синхронизирован: плей, пауза или перемотка одновременны для каждого
     footer
       .row
         .col-lg-12

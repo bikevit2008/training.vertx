@@ -85,7 +85,6 @@ public class RxJavaExample {
             }*/
         server.requestStream().toObservable().subscribe(router::accept);
 
-        EventBus eb = vertx.eventBus();
         server.websocketHandler(new WebSocketHandler());
         server.listenObservable(8080);
     }

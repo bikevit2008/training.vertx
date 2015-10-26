@@ -7,7 +7,6 @@ import io.vertx.rxjava.ext.web.RoutingContext;
 import model.entity.Room;
 import service.RoomService;
 import service.factory.ServiceFactory;
-import utils.NamesRoomGenerator;
 import utils.RoomNameGenerator;
 import utils.URLParser;
 
@@ -33,7 +32,7 @@ public class CreateRoomHandler implements Handler<RoutingContext> {
         String errorMessage = "Link is not valid";
 
         if(provider != errorMessage && videoId != errorMessage){
-            String roomUrl = NamesRoomGenerator.GenerateUrl();
+            String roomUrl = RoomNameGenerator.GenerateUrl();
         Room room = new Room(roomUrl, provider, videoId);
 
         roomService.addRoom(room);

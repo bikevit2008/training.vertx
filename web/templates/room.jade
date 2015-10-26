@@ -46,7 +46,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
           }));
           };
           socket.onclose = function (event) {
-          socket = new WebSocket("ws://" + window.location.host + "/websocket/room/bfadbjadbaeebhd");
+          socket = new WebSocket("ws://" + window.location.host + "/websocket" + window.location.pathname);
           };
           } else {
           alert("Your browser does not support Web Socket.");

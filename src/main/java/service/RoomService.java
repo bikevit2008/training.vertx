@@ -13,11 +13,7 @@ public interface RoomService {
 
     Room addRoom(Room room);
 
-    Room addRoom(String id);
-
-    Room addRoom(String id, List<User> users);
-
-    Room addRoom(String id, List<User> users, List<Message> messages);
+    Room addRoom(String roomUrl, String provider, String videoId);
 
     Room removeRoom(Room room);
 

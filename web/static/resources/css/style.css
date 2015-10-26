@@ -45,13 +45,22 @@
       text-align:center;
       margin-bottom:20px;
       }
-      input.form-control {
+      .validLink {
       color:#1BA0D5;
       }
-      input.form-control::-webkit-input-placeholder {
+      .validLink::-webkit-input-placeholder {
       color:#1BA0D5;
       }
-      input.form-control::-moz-placeholder {
+      .validLink::-moz-placeholder {
+      color:#1BA0D5;
+      }
+      .error {
+      color:#E40000;
+      }
+      .error::-webkit-input-placeholder {
+      color:#1BA0D5;
+      }
+      .error::-moz-placeholder {
       color:#1BA0D5;
       }
       div.separator {

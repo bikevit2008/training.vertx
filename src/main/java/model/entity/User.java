@@ -9,6 +9,16 @@ import java.util.Objects;
 public class User implements Serializable, Comparable<User> {
 
     private String id;
+
+    public String getTextHandlerid() {
+        return textHandlerid;
+    }
+
+    public void setTextHandlerid(String textHandlerid) {
+        this.textHandlerid = textHandlerid;
+    }
+
+    private String textHandlerid;
     private String nickName;
 
     public User(String id) {

@@ -10,7 +10,7 @@ public class URLParser {
 
 
     static String errorMessage = "Link is not valid";
-    static String url = "http://vimeo.com/25451551";
+    static String url = "25451551";
     public static String provider;
 
 
@@ -21,7 +21,7 @@ public class URLParser {
     }
 
     public static String getVideoID(String url) {
-
+        if(provider != null){
         String pattern = "";
 
         switch (provider) {
@@ -53,6 +53,8 @@ public class URLParser {
 
             return errorMessage;  //Letter we can use throw new
         }
+    }
+        else {return errorMessage;}
     }
 
 

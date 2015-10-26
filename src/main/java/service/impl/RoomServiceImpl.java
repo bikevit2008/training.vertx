@@ -16,22 +16,12 @@ public class RoomServiceImpl implements RoomService {
 
     private RoomDao roomDao = DaoFactory.getRoomDao();
 
-    @Override
     public Room addRoom(Room room) {
         return roomDao.insertRoom(room);
     }
 
-    public Room addRoom(String id) {
-        return addRoom(id, null, null);
-    }
-
-    public Room addRoom(String id, List<User> users) {
-        return addRoom(id, users, null);
-    }
-
-    public Room addRoom(String id, List<User> users, List<Message> messages) {
-        if (id == null) throw new IllegalStateException("Room id can't be null");
-        return roomDao.insertRoom(new Room(id, users, messages));
+    public Room addRoom(String roomUrl, String provider, String videoId) {
+        return roomDao.insertRoom(new Room(roomUrl, provider, videoId));
     }
 
     public Room removeRoom(Room room) {

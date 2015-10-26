@@ -14,20 +14,15 @@ public class Room implements Serializable, Comparable<Room> {
     private List<Message> messages = new ArrayList<>();
     private PlayStatus playStatus;
     private Long time;
+    private String provider;
+    private String videoId;
 
-    public Room(String roomUrl) {
+    public Room(String roomUrl, String provider, String videoId){
         this.roomUrl = roomUrl;
-    }
-
-    public Room(String roomUrl, List<User> users) {
-        this.roomUrl = roomUrl;
-        this.users = users;
-    }
-
-    public Room(String roomUrl, List<User> users, List<Message> messages) {
-        this.roomUrl = roomUrl;
-        this.users = users;
-        this.messages = messages;
+        this.provider = provider;
+        this.videoId = videoId;
+        this.playStatus = PlayStatus.PAUSA;
+        this.time = 0L;
     }
 
     public void setUsers(List<User> users) {
