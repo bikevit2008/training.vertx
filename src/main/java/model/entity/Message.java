@@ -9,20 +9,20 @@ public class Message implements Serializable {
 
     private int id;
     private String text;
-    private User owner;
+    private String nickName;
 
-    public Message(int id, String text, User owner) {
+    public Message(int id, String text, String nickName) {
         this.id = id;
         this.text = text;
-        this.owner = owner;
+        this.nickName = nickName;
     }
 
     public void setText(String text) {
         this.text = text;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public int getId() {
@@ -34,8 +34,8 @@ public class Message implements Serializable {
         return text;
     }
 
-    public User getOwner() {
-        return owner;
+    public String getNickName() {
+        return nickName;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class Message implements Serializable {
         return "Message{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
-                ", owner=" + owner +
+                ", nickname=" + nickName +
                 '}';
     }
 }

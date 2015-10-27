@@ -27,7 +27,7 @@ public class RxJavaExample {
 
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
-
+        EventBus eb = vertx.eventBus();
         Router router = Router.router(vertx);
         Route home = router.route().path("/");
         home.handler(routingContext -> {

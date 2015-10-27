@@ -1,5 +1,7 @@
 package model.entity;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,32 +10,47 @@ import java.util.List;
  * Created by denis on 13/10/15.
  */
 public class Room implements Serializable, Comparable<Room> {
-
+    @JsonIgnore
     private String roomUrl;
-    private List<User> users = new ArrayList<>();
+    @JsonIgnore
+    private List<String> users = new ArrayList<>();
     private List<Message> messages = new ArrayList<>();
     private PlayStatus playStatus;
     private Long time;
     private String provider;
     private String videoId;
+    @JsonView
+    private int countUsers;
 
-    public Room(String roomUrl, String provider, String videoId){
+    public Room(String roomUrl, String provider, String videoId, PlayStatus playStatus, Long time, int countUsers) {
         this.roomUrl = roomUrl;
         this.provider = provider;
         this.videoId = videoId;
-        this.playStatus = PlayStatus.PAUSA;
-        this.time = 0L;
+        this.playStatus = playStatus;
+        this.time = time;
+        this.countUsers = countUsers;
     }
 
-    public void setUsers(List<User> users) {
+    public Room(int countUsers) {
+        this.countUsers = countUsers;
+    }
+
+
+    public int getCountUsers() { return countUsers; }
+
+    public void setCountUsers(int countUsers) {
+        this.countUsers = countUsers;
+    }
+
+    public void setUsers(List<String> users) {
         this.users = users;
     }
 
-    public void addUser(User user) {
+    public void addUser(String user) {
         this.users.add(user);
     }
 
-    public boolean removeUser(User user) {
+    public boolean removeUser(String user) {
         return this.users.remove(user);
     }
 
@@ -45,7 +62,7 @@ public class Room implements Serializable, Comparable<Room> {
         return roomUrl;
     }
 
-    public List<User> getUsers() {
+    public List<String> getUsers() {
         return users;
     }
 
