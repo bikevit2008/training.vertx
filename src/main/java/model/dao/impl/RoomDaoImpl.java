@@ -1,7 +1,7 @@
 package model.dao.impl;
 
 import model.dao.RoomDao;
-import model.dao.factory.DbMapFactory;
+import model.dao.factory.DbService;
 import model.entity.Room;
 import org.mapdb.BTreeMap;
 
@@ -10,27 +10,36 @@ import org.mapdb.BTreeMap;
  */
 public class RoomDaoImpl implements RoomDao {
 
-    private BTreeMap<String, Room> rooms = DbMapFactory.getRoomsTreeMap();
+    private BTreeMap<String, Room> rooms = DbService.getRoomsTreeMap();
 
 
     @Override
     public Room insertRoom(Room room) {
-        return rooms.putIfAbsent(room.getRoomUrl(), room);
+        Room result = rooms.putIfAbsent(room.getRoomUrl(), room);
+        DbService.commitRoom();
+        return result;
     }
 
     @Override
     public Room removeRoom(Room room) {
-        return rooms.remove(room.getRoomUrl());
+        Room result = rooms.remove(room.getRoomUrl());
+        DbService.commitRoom();
+        return result;
     }
 
     @Override
     public Room removeRoomById(String id) {
-        return rooms.remove(id);
+        Room result = rooms.remove(id);
+        DbService.commitRoom();
+        return result;
+
     }
 
     @Override
     public Room updateRoom(Room room) {
-        return rooms.replace(room.getRoomUrl(), room);
+        Room result = rooms.replace(room.getRoomUrl(), room);
+        DbService.commitRoom();
+        return result;
     }
 
     @Override
