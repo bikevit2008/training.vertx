@@ -20,7 +20,7 @@ public class Room implements Serializable, Comparable<Room> {
     private String provider;
     private String videoId;
     @JsonView
-    private int countUsers;
+    public CountUsers countUsers;
 
     public Room(String roomUrl, String provider, String videoId, PlayStatus playStatus, Long time, int countUsers) {
         this.roomUrl = roomUrl;
@@ -28,19 +28,9 @@ public class Room implements Serializable, Comparable<Room> {
         this.videoId = videoId;
         this.playStatus = playStatus;
         this.time = time;
-        this.countUsers = countUsers;
+        this.countUsers = new CountUsers(countUsers);
     }
 
-    public Room(int countUsers) {
-        this.countUsers = countUsers;
-    }
-
-
-    public int getCountUsers() { return countUsers; }
-
-    public void setCountUsers(int countUsers) {
-        this.countUsers = countUsers;
-    }
 
     public void setUsers(List<String> users) {
         this.users = users;

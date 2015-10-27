@@ -7,19 +7,19 @@ import java.io.Serializable;
  */
 public class CountUsers implements Serializable {
 
-    private int countUser = 0;
+    private int countUsers = 0;
 
     public CountUsers (int countUser) {
-        this.countUser=countUser;
+        this.countUsers=countUser;
 
     }
 
     public int getCountUser() {
-        return countUser;
+        return countUsers;
     }
 
     public void setCountUser(int countUser) {
-        this.countUser = countUser;
+        this.countUsers = countUser;
     }
 
 

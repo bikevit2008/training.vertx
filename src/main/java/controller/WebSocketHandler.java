@@ -36,14 +36,14 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
 
         Message message = new Message(1, "Hi!", "Vitaly");
         room.addMessage(message);
-        room.setCountUsers(room.getCountUsers() + 1);
+        room.countUsers.setCountUser(room.countUsers.getCountUser() + 1);
         roomService.updateRoom(room);
 
 
-        System.out.println(room.getCountUsers());
+        System.out.println(room.countUsers.getCountUser());
 
         for (String textHandlerID : room.getUsers()){
-            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.getCountUsers()));
+            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.countUsers.getCountUser()));
         }
 
         //When client disconnect*/
@@ -52,11 +52,11 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
             *       2.TextHandlerId
             *       3.Nickname */
             //Here we must delete TextHandlerID
-            room.setCountUsers(room.getCountUsers() - 1);
+            room.countUsers.setCountUser(room.countUsers.getCountUser() - 1);
             room.removeUser(serverWebSocket.textHandlerID());
             roomService.updateRoom(room);
 
-            System.out.println(room.getCountUsers());
+            System.out.println(room.countUsers.getCountUser());
             System.out.println("Client: " + serverWebSocket.textHandlerID() + " Disconnected.");
 
         });
