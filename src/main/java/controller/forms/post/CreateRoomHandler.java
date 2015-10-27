@@ -4,6 +4,7 @@ import de.neuland.jade4j.Jade4J;
 import io.vertx.core.Handler;
 import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.RoutingContext;
+import model.entity.PlayStatus;
 import model.entity.Room;
 import service.RoomService;
 import service.factory.ServiceFactory;
@@ -33,7 +34,7 @@ public class CreateRoomHandler implements Handler<RoutingContext> {
 
         if(provider != errorMessage && videoId != errorMessage){
             String roomUrl = RoomNameGenerator.GenerateUrl();
-        Room room = new Room(roomUrl, provider, videoId);
+        Room room = new Room(roomUrl, provider, videoId, PlayStatus.PAUSE, 0L, 0);
 
         roomService.addRoom(room);
 

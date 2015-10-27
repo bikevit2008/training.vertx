@@ -3,7 +3,6 @@ package controller;
 import de.neuland.jade4j.Jade4J;
 import io.vertx.core.Handler;
 import io.vertx.rxjava.core.http.HttpServerResponse;
-import io.vertx.rxjava.ext.web.Cookie;
 import io.vertx.rxjava.ext.web.RoutingContext;
 import io.vertx.rxjava.ext.web.Session;
 import model.entity.Room;
@@ -26,20 +25,17 @@ public class RoomHandler implements Handler<RoutingContext> {
 
     @Override
     public void handle(RoutingContext routingContext) {
-        String roomUri = routingContext.request().getParam("roomUri");
+        String roomUrl = routingContext.request().getParam("roomUri");
         HttpServerResponse resp = routingContext.response();
         resp.putHeader("content-type", "text/html");
         Map<String, Object> model = new HashMap<String, Object>();
-        Session session = routingContext.session();
 
-
-
-        String sessionId = session.id();
-        routingContext.addCookie(Cookie.cookie("SessionID", sessionId));
-        Room room = roomService.getRoomByUrl(roomUri);
+        String sessionId = routingContext.getCookie("vertx-web.session").getValue();
+        System.out.println("Session ID from server: " + sessionId);
+        //Room room = roomService.getRoomByUrl(roomUrl);
         User user = new User(sessionId);
-        room.addUser(user);
-        roomService.updateRoom(room);
+        //room.addUser(user);
+        //roomService.updateRoom(room);
         userService.addUser(user);
 
 

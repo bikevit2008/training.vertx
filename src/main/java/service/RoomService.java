@@ -1,6 +1,7 @@
 package service;
 
 import model.entity.Message;
+import model.entity.PlayStatus;
 import model.entity.Room;
 import model.entity.User;
 
@@ -13,7 +14,7 @@ public interface RoomService {
 
     Room addRoom(Room room);
 
-    Room addRoom(String roomUrl, String provider, String videoId);
+    Room addRoom(String roomUrl, String provider, String videoId, PlayStatus playStatus, Long time, int countUsers);
 
     Room removeRoom(Room room);
 

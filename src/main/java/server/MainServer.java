@@ -5,10 +5,12 @@ import controller.RoomHandler;
 import controller.WebSocketHandler;
 import controller.forms.post.CreateRoomHandler;
 import io.vertx.rxjava.core.Vertx;
+import io.vertx.rxjava.core.eventbus.EventBus;
 import io.vertx.rxjava.core.http.HttpServer;
 import io.vertx.rxjava.ext.web.Route;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.handler.BodyHandler;
+import io.vertx.rxjava.ext.web.handler.CookieHandler;
 import io.vertx.rxjava.ext.web.handler.SessionHandler;
 import io.vertx.rxjava.ext.web.handler.StaticHandler;
 import io.vertx.rxjava.ext.web.sstore.LocalSessionStore;
@@ -22,15 +24,19 @@ public class MainServer {
         new MainServer().start();
     }
 
+    public static Vertx vertx = Vertx.vertx();
+    public static EventBus eb = vertx.eventBus();
+
     public void start() {
 
-        Vertx vertx = Vertx.vertx();
 
         Router router = Router.router(vertx);
 
         router.route().handler(BodyHandler.create());
 
         router.route().handler(SessionHandler.create(LocalSessionStore.create(vertx)));
+
+        router.route().handler(CookieHandler.create());
 
         Route homePage = router.route().path("/");
         homePage.handler(new HomeHandler());

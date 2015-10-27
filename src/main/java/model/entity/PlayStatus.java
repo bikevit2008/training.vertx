@@ -5,6 +5,6 @@ package model.entity;
  */
 public enum PlayStatus {
 
-    PAUSA, PLAY
+    PAUSE, PLAY
 
 }
