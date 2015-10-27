@@ -24,8 +24,8 @@ public class DbService {
     //TODO Don't delete on shutdown in production
     private static DB roomsDb = DBMaker.newFileDB(new File(ROOMS_FILE_NAME)).closeOnJvmShutdown().make();
 
-    private static final BTreeMap<String, User> users = usersDb.createTreeMap(USERS_TREE_NAME).make();
-    private static final BTreeMap<String, Room> rooms = roomsDb.createTreeMap(ROOMS_TREE_NAME).make();
+    private static final BTreeMap<String, User> users = usersDb.getTreeMap(USERS_TREE_NAME);
+    private static final BTreeMap<String, Room> rooms = roomsDb.getTreeMap(ROOMS_TREE_NAME);
 
 
     public static BTreeMap<String, User> getUsersTreeMap() {

@@ -15,7 +15,7 @@ public class Room implements Serializable, Comparable<Room> {
     @JsonIgnore
     private List<String> users = new ArrayList<>();
     public List<Message> messages = new ArrayList<>();
-    private PlayStatus playStatus;
+    public PlayStatus playStatus;
     public Time time;
     private String provider;
     private String videoId;
