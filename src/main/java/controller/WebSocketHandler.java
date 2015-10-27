@@ -43,7 +43,11 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         System.out.println(room.countUsers.getCountUser());
 
         for (String textHandlerID : room.getUsers()){
-            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.countUsers.getCountUser()));
+            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.countUsers));
+            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.playStatusWork));
+            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.time));
+            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.messages));
+            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.messages.get(0)));
         }
 
         //When client disconnect*/

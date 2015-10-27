@@ -8,17 +8,17 @@ import java.io.Serializable;
 public class Message implements Serializable {
 
     private int id;
-    private String text;
+    private String message;
     private String nickName;
 
-    public Message(int id, String text, String nickName) {
+    public Message(int id, String message, String nickName) {
         this.id = id;
-        this.text = text;
+        this.message = message;
         this.nickName = nickName;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setText(String message) {
+        this.message = message;
     }
 
     public void setNickName(String nickName) {
@@ -31,7 +31,7 @@ public class Message implements Serializable {
     }
 
     public String getText() {
-        return text;
+        return message;
     }
 
     public String getNickName() {
@@ -42,7 +42,7 @@ public class Message implements Serializable {
     public String toString() {
         return "Message{" +
                 "id=" + id +
-                ", text='" + text + '\'' +
+                ", text='" + message + '\'' +
                 ", nickname=" + nickName +
                 '}';
     }

@@ -14,21 +14,22 @@ public class Room implements Serializable, Comparable<Room> {
     private String roomUrl;
     @JsonIgnore
     private List<String> users = new ArrayList<>();
-    private List<Message> messages = new ArrayList<>();
+    public List<Message> messages = new ArrayList<>();
     private PlayStatus playStatus;
-    private Long time;
+    public Time time;
     private String provider;
     private String videoId;
-    @JsonView
     public CountUsers countUsers;
+    public PlayStatusWork playStatusWork;
 
     public Room(String roomUrl, String provider, String videoId, PlayStatus playStatus, Long time, int countUsers) {
         this.roomUrl = roomUrl;
         this.provider = provider;
         this.videoId = videoId;
         this.playStatus = playStatus;
-        this.time = time;
+        this.time = new Time (time);
         this.countUsers = new CountUsers(countUsers);
+        this.playStatusWork = new PlayStatusWork(playStatus);
     }
 
 
@@ -58,22 +59,6 @@ public class Room implements Serializable, Comparable<Room> {
 
     public List<Message> getMessages() {
         return messages;
-    }
-
-    public Long getTime() {
-        return time;
-    }
-
-    public void setTime(Long time) {
-        this.time = time;
-    }
-
-    public PlayStatus getPlayStatus() {
-        return playStatus;
-    }
-
-    public void setPlayStatus(PlayStatus playStatus) {
-        this.playStatus = playStatus;
     }
 
     @Override
