@@ -46,6 +46,10 @@ public class CreateRoomHandler implements Handler<RoutingContext> {
             HttpServerResponse resp = routingContext.response();
             resp.putHeader("content-type", "text/html");
             Map<String, Object> model = new HashMap<String, Object>();
+            model.put("validationLink", "validLink");
+            model.put("displayView", "displayBlock");
+            model.put("error", "error");
+            model.put("valueOfIncorrectLink", linkValueVideo);
 
             // Write to the response and end it
             try {

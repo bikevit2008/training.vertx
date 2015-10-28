@@ -34,7 +34,6 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         String sessionId = parseCookieWS(serverWebSocket.headers().get("Cookie"));
         System.out.println("Session: " + sessionId);
         User user = userService.getUserById(sessionId);
-        user.setTextHandlerid(serverWebSocket.textHandlerID());
         userService.updateUser(user);
 
         Message message = new Message(1, "Hi!", "Vitaly");

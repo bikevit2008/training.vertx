@@ -34,10 +34,13 @@ html(xmlns='http://www.w3.org/1999/xhtml')
             form(method='post', action='/createRoom')
               .input-url.col-lg-8.col-xs-12
                 .input-group.input-group-lg
-                  input.form-control.validationLink(type='text', name='linkValue', placeholder='Ссылка на видео с youtube', aria-describedby='Ссылка на видео с youtube или vimeo')
+                  input.form-control(type='text', name='linkValue', placeholder='Ссылка на видео с youtube', aria-describedby='Ссылка на видео с youtube или vimeo', value='#{valueOfIncorrectLink}', class='#{validationLink}')
                   span.input-group-btn
                     button.btn.btn-default(type='submit') >>
-                label.visible-lg-block.visible-md-block Например: https://www.youtube.com/watch?v=Scxs7L0vhZ4
+                label.visible-lg-block.visible-md-block(class='#{displayView} #{error}')
+                  h1 Введите корректную ссылку
+                label.visible-lg-block.visible-md-block
+                  h4(align='center') Например: https://www.youtube.com/watch?v=Scxs7L0vhZ4
       .row.separator
       .row
         .container

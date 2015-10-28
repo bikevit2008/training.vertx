@@ -55,13 +55,19 @@
       color:#1BA0D5;
       }
       .error {
-      color:#E40000;
+      color:#FFC729;
       }
       .error::-webkit-input-placeholder {
-      color:#1BA0D5;
+      color:#FFC729;
       }
       .error::-moz-placeholder {
-      color:#1BA0D5;
+      color:#FFC729;
+      }
+      .displayBlock{
+      display: block;
+      }
+      .displayNone{
+      display: none!important;
       }
       div.separator {
       height: 20px;

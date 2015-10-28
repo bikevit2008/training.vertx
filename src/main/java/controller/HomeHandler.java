@@ -18,7 +18,8 @@ public class HomeHandler implements Handler<RoutingContext> {
         HttpServerResponse resp = routingContext.response();
         resp.putHeader("content-type", "text/html");
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("validationLink", ".validLink");
+        model.put("validationLink", "validLink");
+        model.put("displayView", "displayNone");
 
         // Write to the response and end it
         try {

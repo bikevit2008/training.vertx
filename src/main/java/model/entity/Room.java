@@ -40,6 +40,9 @@ public class Room implements Serializable, Comparable<Room> {
         return roomUrl;
     }
 
+    public String getProvider() { return provider; }
+
+    public String getVideoId() { return videoId; }
 
     public List<Message> getMessages() {
         return messages;

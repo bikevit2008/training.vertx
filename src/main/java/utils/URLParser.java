@@ -10,15 +10,8 @@ public class URLParser {
 
 
     static String errorMessage = "Link is not valid";
-    static String url = "25451551";
     public static String provider;
 
-
-    public static void main(String[] args) {
-
-        System.out.println(getProvider(url)+"   "+getVideoID(url));
-
-    }
 
     public static String getVideoID(String url) {
         if(provider != null){

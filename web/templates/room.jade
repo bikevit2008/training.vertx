@@ -32,18 +32,12 @@ html(xmlns='http://www.w3.org/1999/xhtml')
           if (parsed.value == currentTime) {} else {
           playerSeeked(parsed.value);
           }
-          } else if (parsed.method == "CountUsersOnline") {
+          } else if (parsed.method == "countUsers") {
           document.getElementById('watchers').innerHTML = parsed.value;
           }
           else if(parsed.method == "Buffering"){
           playerBuffering();
           }
-          };
-          socket.onopen = function (event) {
-          send(JSON.stringify({
-          'method': 'UserOnline',
-          'value': ''
-          }));
           };
           socket.onclose = function (event) {
           socket = new WebSocket("ws://" + window.location.host + "/websocket" + window.location.pathname);
@@ -218,7 +212,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
         .row.videoblock.row-same-height
           .col-lg-8.col-xs-12.col-lg-height.col-md-height.videoplayer
             .embed-responsive.embed-responsive-16by9
-              iframe#player.embed-responsive-item(frameborder='0', allowfullscreen='1', title='YouTube video player', width='100%', height='100%', src='https://www.youtube.com/embed/Scxs7L0vhZ4?controls=0&rel=0&disablekb=1&fs=0&showinfo=0&enablejsapi=1')
+              iframe#player.embed-responsive-item(frameborder='0', allowfullscreen='1', title='YouTube video player', width='100%', height='100%', src='#{videoIframeLink}')
               .elements
                 span.playToggle
                   a.play(href='javascript://')

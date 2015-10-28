@@ -14,10 +14,10 @@ import java.util.ArrayList;
  */
 public class DbService {
 
-    private static final String USERS_FILE_NAME = "transient";
+    private static final String USERS_FILE_NAME = "users";
     private static final String USERS_TREE_NAME = "users";
 
-    private static final String ROOMS_FILE_NAME = "permanent";
+    private static final String ROOMS_FILE_NAME = "rooms";
     private static final String ROOMS_TREE_NAME = "rooms";
 
     private static final String TEXTHANDLERIDS_FILE_NAME = "textHandlerIDS";
