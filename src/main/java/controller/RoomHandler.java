@@ -4,14 +4,13 @@ import de.neuland.jade4j.Jade4J;
 import io.vertx.core.Handler;
 import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.RoutingContext;
-import io.vertx.rxjava.ext.web.Session;
-import model.entity.Room;
 import model.entity.User;
-import service.RoomService;
+import service.IdsService;
 import service.UserService;
 import service.factory.ServiceFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,8 +19,9 @@ import java.util.Map;
  */
 public class RoomHandler implements Handler<RoutingContext> {
 
-    private RoomService roomService = ServiceFactory.getRoomService();
     private UserService userService = ServiceFactory.getUserService();
+    private IdsService idsService = ServiceFactory.getIdsService();
+
 
     @Override
     public void handle(RoutingContext routingContext) {
@@ -32,10 +32,11 @@ public class RoomHandler implements Handler<RoutingContext> {
 
         String sessionId = routingContext.getCookie("vertx-web.session").getValue();
         System.out.println("Session ID from server: " + sessionId);
-        //Room room = roomService.getRoomByUrl(roomUrl);
+
+        ArrayList<String> idsRoom = new ArrayList<String>();
+        idsService.addRoom(roomUrl,idsRoom);
+
         User user = new User(sessionId);
-        //room.addUser(user);
-        //roomService.updateRoom(room);
         userService.addUser(user);
 
 

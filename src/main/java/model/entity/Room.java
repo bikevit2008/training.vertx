@@ -12,8 +12,6 @@ import java.util.List;
 public class Room implements Serializable, Comparable<Room> {
     @JsonIgnore
     private String roomUrl;
-    @JsonIgnore
-    private List<String> users = new ArrayList<>();
     public List<Message> messages = new ArrayList<>();
     public PlayStatus playStatus;
     public Time time;
@@ -33,17 +31,6 @@ public class Room implements Serializable, Comparable<Room> {
     }
 
 
-    public void setUsers(List<String> users) {
-        this.users = users;
-    }
-
-    public void addUser(String user) {
-        this.users.add(user);
-    }
-
-    public boolean removeUser(String user) {
-        return this.users.remove(user);
-    }
 
     public void addMessage(Message message) {
         this.messages.add(message);
@@ -53,9 +40,6 @@ public class Room implements Serializable, Comparable<Room> {
         return roomUrl;
     }
 
-    public List<String> getUsers() {
-        return users;
-    }
 
     public List<Message> getMessages() {
         return messages;
@@ -70,7 +54,6 @@ public class Room implements Serializable, Comparable<Room> {
     public String toString() {
         return "Room{" +
                 "roomUrl='" + roomUrl + '\'' +
-                ", users=" + users +
                 ", messages=" + messages +
                 '}';
     }

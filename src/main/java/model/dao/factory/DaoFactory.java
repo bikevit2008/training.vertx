@@ -1,8 +1,10 @@
 package model.dao.factory;
 
+import model.dao.IdsDao;
 import model.dao.MessageDao;
 import model.dao.RoomDao;
 import model.dao.UserDao;
+import model.dao.impl.IdsDaoImpl;
 import model.dao.impl.MessageDaoImpl;
 import model.dao.impl.RoomDaoImpl;
 import model.dao.impl.UserDaoImpl;
@@ -23,5 +25,7 @@ public class DaoFactory {
     public static UserDao getUserDao() {
         return new UserDaoImpl();
     }
+
+    public static IdsDao getIdsDao() { return new IdsDaoImpl(); }
 
 }

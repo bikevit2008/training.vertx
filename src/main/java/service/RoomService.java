@@ -1,11 +1,7 @@
 package service;
 
-import model.entity.Message;
 import model.entity.PlayStatus;
 import model.entity.Room;
-import model.entity.User;
-
-import java.util.List;
 
 /**
  * Created by denis on 13/10/15.

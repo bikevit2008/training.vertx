@@ -9,17 +9,17 @@ public class CountUsers implements Serializable {
 
     private int countUsers = 0;
 
-    public CountUsers (int countUser) {
-        this.countUsers=countUser;
+    public CountUsers (int countUsers) {
+        this.countUsers=countUsers;
 
     }
 
-    public int getCountUser() {
+    public int getCountUsers() {
         return countUsers;
     }
 
-    public void setCountUser(int countUser) {
-        this.countUsers = countUser;
+    public void setCountUsers(int countUsers) {
+        this.countUsers = countUsers;
     }
 
 

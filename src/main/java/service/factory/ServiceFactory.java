@@ -1,7 +1,9 @@
 package service.factory;
 
+import service.IdsService;
 import service.RoomService;
 import service.UserService;
+import service.impl.IdsServiceImpl;
 import service.impl.RoomServiceImpl;
 import service.impl.UserServiceImpl;
 
@@ -17,5 +19,7 @@ public class ServiceFactory {
     public static RoomService getRoomService() {
         return new RoomServiceImpl();
     }
+
+    public static IdsService getIdsService() { return new IdsServiceImpl(); }
 
 }

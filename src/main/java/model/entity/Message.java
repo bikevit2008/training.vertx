@@ -42,7 +42,7 @@ public class Message implements Serializable {
     public String toString() {
         return "Message{" +
                 "id=" + id +
-                ", text='" + message + '\'' +
+                ", message='" + message + '\'' +
                 ", nickname=" + nickName +
                 '}';
     }

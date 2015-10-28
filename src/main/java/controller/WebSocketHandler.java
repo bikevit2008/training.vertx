@@ -6,9 +6,12 @@ import model.entity.Message;
 import model.entity.Room;
 import model.entity.User;
 import server.MainServer;
+import service.IdsService;
 import service.RoomService;
 import service.UserService;
 import service.factory.ServiceFactory;
+
+import java.util.ArrayList;
 
 /**
  * Created by Vitaly on 25.10.15.
@@ -18,6 +21,7 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
 
     private UserService userService = ServiceFactory.getUserService();
     private RoomService roomService = ServiceFactory.getRoomService();
+    private IdsService idsService = ServiceFactory.getIdsService();
 
 
     @Override
@@ -32,35 +36,41 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         User user = userService.getUserById(sessionId);
         user.setTextHandlerid(serverWebSocket.textHandlerID());
         userService.updateUser(user);
-        room.addUser(serverWebSocket.textHandlerID());
 
         Message message = new Message(1, "Hi!", "Vitaly");
         room.addMessage(message);
-        room.countUsers.setCountUser(room.countUsers.getCountUser() + 1);
+
+        ArrayList<String> idsRoom = idsService.getRoomByUrl(roomUrl);
+        idsRoom.add(serverWebSocket.textHandlerID());
+        idsService.updateRoom(roomUrl, idsRoom);
+
+        room.countUsers.setCountUsers(idsRoom.size());
         roomService.updateRoom(room);
+        System.out.println(room.countUsers.getCountUsers());
 
 
-        System.out.println(room.countUsers.getCountUser());
-
-        for (String textHandlerID : room.getUsers()){
+        for (String textHandlerID : idsRoom){
             MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.countUsers));
             MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.playStatusWork));
             MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.time));
             MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.messages));
             MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.messages.get(0)));
+            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room));
         }
 
         //When client disconnect*/
         serverWebSocket.closeHandler(handler -> {
-            /*User->1.Session
-            *       2.TextHandlerId
-            *       3.Nickname */
-            //Here we must delete TextHandlerID
-            room.countUsers.setCountUser(room.countUsers.getCountUser() - 1);
-            room.removeUser(serverWebSocket.textHandlerID());
+
+            idsRoom.remove(serverWebSocket.textHandlerID());
+            idsService.updateRoom(roomUrl, idsRoom);
+
+            room.countUsers.setCountUsers(idsRoom.size());
             roomService.updateRoom(room);
 
-            System.out.println(room.countUsers.getCountUser());
+            for (String textHandlerID : idsRoom){
+                MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.countUsers));
+            }
+            System.out.println(room.countUsers.getCountUsers());
             System.out.println("Client: " + serverWebSocket.textHandlerID() + " Disconnected.");
 
         });

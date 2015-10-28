@@ -2,7 +2,9 @@ package controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import model.entity.CountUsers;
+
+import java.io.IOException;
 
 /**
  * Created by Vitaly on 27.10.15.
@@ -18,10 +20,15 @@ public class JSONHandler {
         }
         return jsonReturn;
     }
-   /* public static Object convertFromJSON(String json){
+    public static CountUsers convertFromJSON(String json){
         ObjectMapper objectMapper = new ObjectMapper();
-        Object object = objectMapper.readValue(json);
-        return object;
-    }*/
+        CountUsers countUsers = null;
+        try {
+            countUsers = objectMapper.readValue(json, CountUsers.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return countUsers;
+    }
 
 }
