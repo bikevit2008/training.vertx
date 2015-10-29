@@ -2,6 +2,7 @@ package controller;
 
 import io.vertx.core.Handler;
 import io.vertx.rxjava.core.http.ServerWebSocket;
+import model.entity.GotJSON;
 import model.entity.Message;
 import model.entity.Room;
 import model.entity.User;
@@ -29,6 +30,8 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
 
         String roomUrl = parseRoomUrlWS(serverWebSocket.path());
         Room room = roomService.getRoomByUrl(roomUrl);
+        ArrayList<String> idsRoom = idsService.getRoomByUrl(roomUrl);
+        String textHandlerID = serverWebSocket.textHandlerID();
         // onplay.me/websocket/room/dfsdfsdfsdfsf
 
         String sessionId = parseCookieWS(serverWebSocket.headers().get("Cookie"));
@@ -36,10 +39,6 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         User user = userService.getUserById(sessionId);
         userService.updateUser(user);
 
-        Message message = new Message(1, "Hi!", "Vitaly");
-        room.addMessage(message);
-
-        ArrayList<String> idsRoom = idsService.getRoomByUrl(roomUrl);
         idsRoom.add(serverWebSocket.textHandlerID());
         idsService.updateRoom(roomUrl, idsRoom);
 
@@ -47,15 +46,14 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         roomService.updateRoom(room);
         System.out.println(room.countUsers.getCountUsers());
 
-
-        for (String textHandlerID : idsRoom){
-            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.countUsers));
-            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.playStatusWork));
-            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.time));
-            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.messages));
-            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.messages.get(0)));
-            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room));
+        //Send new countUsers to all
+        for (String textHandlerIDs : idsRoom) {
+            MainServer.eb.publish(textHandlerIDs, JSONHandler.convertToJSON(room.countUsers));
         }
+        //When client connected
+        MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.playStatusWork));
+        MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.time));
+        //Messages inserted to html
 
         //When client disconnect*/
         serverWebSocket.closeHandler(handler -> {
@@ -66,22 +64,52 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
             room.countUsers.setCountUsers(idsRoom.size());
             roomService.updateRoom(room);
 
-            for (String textHandlerID : idsRoom){
-                MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.countUsers));
+            //Send new countUsers to all
+            for (String textHandlerIDs : idsRoom){
+                MainServer.eb.publish(textHandlerIDs, JSONHandler.convertToJSON(room.countUsers));
             }
             System.out.println(room.countUsers.getCountUsers());
             System.out.println("Client: " + serverWebSocket.textHandlerID() + " Disconnected.");
 
         });
+        serverWebSocket.frameHandler(handler -> {
+            System.out.println("Got message: " + handler.textData());
+            GotJSON gotJSON = JSONHandler.convertFromJSON(handler.textData());
 
-        //Send and get messages from(to) client
-        serverWebSocket.toObservable().subscribe(buffer -> {
 
-            System.out.println("RoomUrl: " + roomUrl);
-            System.out.println("Got message " + buffer.toString("UTF-8"));
-            MainServer.eb.publish(serverWebSocket.textHandlerID(), buffer.toString("UTF-8"));
-            System.out.println(serverWebSocket.textHandlerID());
 
+            if(gotJSON.getNickName() != null){
+                user.setNickName(gotJSON.getNickName());
+                userService.updateUser(user);
+            }
+
+            if (gotJSON.getMessage() != null) {
+                Message message = new Message(gotJSON.getMessage(), user.getNickName());
+                for (String textHandlerIDs : idsRoom) {
+                    if (textHandlerIDs != textHandlerID) {
+
+                        MainServer.eb.publish(textHandlerIDs, JSONHandler.convertToJSON(message));
+                    }
+                }
+                room.addMessage(message);
+                roomService.updateRoom(room);
+            }
+            if(gotJSON.getNickName() == null && gotJSON.getMessage() == null) {
+                for (String textHandlerIDs : idsRoom) {
+                    if (textHandlerIDs != textHandlerID) {
+
+                        MainServer.eb.publish(textHandlerIDs, handler.textData());
+                        if (gotJSON.getPlayStatus() != null) {
+                            room.playStatusWork.setPlayStatus(gotJSON.getPlayStatus());
+                            roomService.updateRoom(room);
+                        }
+                        if (gotJSON.getTime() != 0) {
+                            room.time.setTime(gotJSON.getTime());
+                            roomService.updateRoom(room);
+                        }
+                    }
+                }
+            }
         });
     }
 

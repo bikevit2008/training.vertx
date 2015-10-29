@@ -1,7 +1,7 @@
 html(xmlns='http://www.w3.org/1999/xhtml')
   head
     meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
-    title May the force be with you, Luke - OnPlay
+    title OnPlay гостевая комната
     link(rel='stylesheet', href='/resources/css/bootstrap.min.css')
     link(rel='stylesheet', href='/resources/css/style.css')
     meta(name='viewport', content='width=device-width, initial-scale=1')
@@ -9,6 +9,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
           window.onload = function () {
           document.getElementById('link').value = window.location.toString().replace('http://', '');
           };
+          var nickName = '';
           var posX;
           var socket;
           var currentTime;
@@ -24,19 +25,20 @@ html(xmlns='http://www.w3.org/1999/xhtml')
           socket = new WebSocket("ws://" + window.location.host + "/websocket" + window.location.pathname);
           socket.onmessage = function (event) {
           var parsed = JSON.parse(event.data);
-          if (parsed.method == "Play") {
+          if (parsed.playStatus == "PLAY") {
           playerPlay();
-          } else if (parsed.method == "Pause") {
+          } else if (parsed.playStatus == "PAUSE") {
           playerPause();
-          } else if (parsed.method == "CurrentTime") {
-          if (parsed.value == currentTime) {} else {
-          playerSeeked(parsed.value);
+          } else if (parsed.time) {
+          if (parsed.time == currentTime) {} else {
+          playerSeeked(parsed.time);
           }
-          } else if (parsed.method == "countUsers") {
-          document.getElementById('watchers').innerHTML = parsed.value;
+          } else if (parsed.countUsers) {
+          document.getElementById('watchers').innerHTML = parsed.countUsers;
           }
-          else if(parsed.method == "Buffering"){
-          playerBuffering();
+          else if(parsed.nickName){
+            document.getElementById('play_messageGet').play();
+            document.getElementById('messages').innerHTML = document.getElementById('messages').innerHTML + "<p><span>" + parsed.nickName + "</span>: " + parsed.text + "</p>";
           }
           };
           socket.onclose = function (event) {
@@ -57,26 +59,32 @@ html(xmlns='http://www.w3.org/1999/xhtml')
           }
           function Play() {
           send(JSON.stringify({
-          'method': 'Play',
-          'value': ''
+          'playStatus': 'PLAY'
           }));
           }
           function Pause() {
           send(JSON.stringify({
-          'method': 'Pause',
-          'value': ''
+          'playStatus': 'PAUSE'
           }));
           }
           function Seeked(seconds) {
           send(JSON.stringify({
-          'method': 'CurrentTime',
-          'value': seconds
+          'time': seconds
           }));
           }
           function Buffering() {
           send(JSON.stringify({
-          'method': 'Buffering',
-          'value': ''
+          'playStatus': 'PAUSE'
+          }));
+          }
+          function sendMessage(text) {
+          send(JSON.stringify(
+          {'message': text
+          }));
+          }
+          function sendNickname(nickName) {
+          send(JSON.stringify(
+          {'nickName': nickName
           }));
           }
 
@@ -342,19 +350,46 @@ html(xmlns='http://www.w3.org/1999/xhtml')
                           g#svg_20(stroke='null')
           .col-lg-4.col-xs-12.col-lg-height.col-md-height.chat
             h3 Чат
-            .messages
+            .messages#messages
               p
                 span OnPlay
                 | : Добро пожаловать на страничку проекта.
-            .input-group
-              input.form-control(type='text', placeholder='Отправьте соощение...')
+              for message in messages
+                  p
+                    span #{message.nickName}
+                    | : #{message.text}
+            .input-group#nickEnter
+              input.form-control#nickEnterField(type='text', placeholder='Введите ник')
               span.input-group-btn
-                button.btn.btn-default(type='button') Отправить
+                button.btn.btn-default#nickEnterButton(type='button') ОК
+            .input-group#messageEnter(style='display: none;')
+              input.form-control#messageEnterField(type='text', placeholder='Отправьте соощение...')
+              span.input-group-btn
+                button.btn.btn-default#messageEnterButton(type='button') Отправить
       footer
         .row
           .col-lg-12
             p Powered by OnPlay 2015
+
+    audio#play_messageGet.displayNone
+      source(src='/resources/audio/messageGet.mp3', type='audio/mp3')
     script.
+          document.getElementById('nickEnterButton').addEventListener('click', function(){
+              nickName = document.getElementById('nickEnterField').value;
+              if(nickName != ''){
+              document.getElementById('nickEnter').style.display = 'none';
+              document.getElementById('messageEnter').style.display = 'table';
+              sendNickname(nickName);
+              }
+              });
+          document.getElementById('messageEnterButton').addEventListener('click', function(){
+              var text = document.getElementById('messageEnterField').value;
+              if(text != ''){
+              document.getElementById('messageEnterField').value = '';
+              sendMessage(text);
+              document.getElementById('messages').innerHTML = document.getElementById('messages').innerHTML + "<p><span>" + nickName + "</span>: " + text + "</p>";
+              }
+              });
           var leftProgress = document.getElementsByClassName('progressBar')[0].getBoundingClientRect().left;
           var widthProgress = document.getElementsByClassName('progressBar')[0].getBoundingClientRect().width;
           var percentProgress = widthProgress / 100;

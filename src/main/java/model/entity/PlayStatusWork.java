@@ -6,6 +6,8 @@ import java.io.Serializable;
  * Created by Игорь on 28.10.2015.
  */
 public class PlayStatusWork implements Serializable {
+    public PlayStatusWork() {
+    }
 
     private PlayStatus playStatus;
 

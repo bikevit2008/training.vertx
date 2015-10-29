@@ -12,8 +12,7 @@ import java.util.List;
 public class Room implements Serializable, Comparable<Room> {
     @JsonIgnore
     private String roomUrl;
-    public List<Message> messages = new ArrayList<>();
-    public PlayStatus playStatus;
+    public ArrayList<Message> messages = new ArrayList<>();
     public Time time;
     private String provider;
     private String videoId;
@@ -24,7 +23,6 @@ public class Room implements Serializable, Comparable<Room> {
         this.roomUrl = roomUrl;
         this.provider = provider;
         this.videoId = videoId;
-        this.playStatus = playStatus;
         this.time = new Time (time);
         this.countUsers = new CountUsers(countUsers);
         this.playStatusWork = new PlayStatusWork(playStatus);

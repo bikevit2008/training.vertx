@@ -3,6 +3,7 @@ package controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.entity.CountUsers;
+import model.entity.GotJSON;
 
 import java.io.IOException;
 
@@ -20,15 +21,15 @@ public class JSONHandler {
         }
         return jsonReturn;
     }
-    public static CountUsers convertFromJSON(String json){
+    public static GotJSON convertFromJSON(String json) {
         ObjectMapper objectMapper = new ObjectMapper();
-        CountUsers countUsers = null;
+        GotJSON gotJSON = null;
         try {
-            countUsers = objectMapper.readValue(json, CountUsers.class);
+            gotJSON = objectMapper.readValue(json, GotJSON.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return countUsers;
+        return gotJSON;
     }
 
 }

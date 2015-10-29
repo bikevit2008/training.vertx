@@ -66,6 +66,9 @@
       .displayBlock{
       display: block;
       }
+      .displayTable{
+      display: table;
+      }
       .displayNone{
       display: none!important;
       }

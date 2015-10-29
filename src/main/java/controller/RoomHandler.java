@@ -37,6 +37,7 @@ public class RoomHandler implements Handler<RoutingContext> {
         String videoId = room.getVideoId();
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("videoIframeLink", UrlGenerator.generateUrl(provider, videoId));
+        model.put("messages", room.getMessages());
 
         String sessionId = routingContext.getCookie("vertx-web.session").getValue();
         System.out.println("Session ID from server: " + sessionId);

@@ -6,6 +6,8 @@ import java.io.Serializable;
  * Created by Игорь on 27.10.2015.
  */
 public class CountUsers implements Serializable {
+    public CountUsers() {
+    }
 
     private int countUsers = 0;
 

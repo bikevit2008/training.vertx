@@ -7,15 +7,18 @@ import java.io.Serializable;
  */
 public class Message implements Serializable {
 
-    private int id;
     private String message;
     private String nickName;
 
-    public Message(int id, String message, String nickName) {
-        this.id = id;
+    public Message() {
+    }
+
+    public Message(String message, String nickName) {
         this.message = message;
         this.nickName = nickName;
     }
+
+
 
     public void setText(String message) {
         this.message = message;
@@ -25,10 +28,6 @@ public class Message implements Serializable {
         this.nickName = nickName;
     }
 
-    public int getId() {
-
-        return id;
-    }
 
     public String getText() {
         return message;
@@ -41,8 +40,7 @@ public class Message implements Serializable {
     @Override
     public String toString() {
         return "Message{" +
-                "id=" + id +
-                ", message='" + message + '\'' +
+                "message='" + message + '\'' +
                 ", nickname=" + nickName +
                 '}';
     }

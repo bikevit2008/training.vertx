@@ -1,5 +1,6 @@
 package server;
 
+import controller.FailureHandler;
 import controller.HomeHandler;
 import controller.RoomHandler;
 import controller.WebSocketHandler;
@@ -49,6 +50,7 @@ public class MainServer {
 
         router.post("/createRoom").handler(new CreateRoomHandler());
 
+        router.route().failureHandler(new FailureHandler());
 
 
         System.out.println("Listen 8080 port ...");
