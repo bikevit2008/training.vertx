@@ -15,6 +15,7 @@ import io.vertx.rxjava.ext.web.handler.CookieHandler;
 import io.vertx.rxjava.ext.web.handler.SessionHandler;
 import io.vertx.rxjava.ext.web.handler.StaticHandler;
 import io.vertx.rxjava.ext.web.sstore.LocalSessionStore;
+import model.entity.Ping;
 
 /**
  * Created by denis on 13/10/15.
@@ -27,6 +28,7 @@ public class MainServer {
 
     public static Vertx vertx = Vertx.vertx();
     public static EventBus eb = vertx.eventBus();
+    public static Ping ping = new Ping();
 
     public void start() {
 

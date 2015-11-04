@@ -43,6 +43,9 @@ html(xmlns='http://www.w3.org/1999/xhtml')
             document.getElementById('play_messageGet').play();
             document.getElementById('messages').innerHTML = document.getElementById('messages').innerHTML + "<p><span>" + parsed.nickName + "</span>: " + parsed.text + "</p>";
           }
+          else if(parsed.utils == "ping"){
+            sendPong();
+          }
           };
           socket.onclose = function (event) {
           socket = new WebSocket("ws://" + window.location.host + "/websocket" + window.location.pathname);
@@ -90,6 +93,11 @@ html(xmlns='http://www.w3.org/1999/xhtml')
           {'nickName': nickName
           }));
           }
+          function sendPong() {
+          send(JSON.stringify(
+          {'utils': 'pong'
+          }));
+          }
 
     script.
           // 2. This code loads the IFrame Player API code asynchronously.
@@ -104,7 +112,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
           player = new YT.Player('player', {
           height: '100%',
           width: '100%',
-          videoId: 'вставьте ссылку в поле выше',
+          videoId: '#{videoId}',
           playerVars: { 'controls': 0, 'rel': 0, 'disablekb': 1, 'fs': 0, 'showinfo': 0},
           events: {
           'onReady': onPlayerReady,
@@ -223,7 +231,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
         .row.videoblock.row-same-height
           .col-lg-8.col-xs-12.col-lg-height.col-md-height.videoplayer
             .embed-responsive.embed-responsive-16by9
-              iframe#player.embed-responsive-item(frameborder='0', allowfullscreen='1', title='YouTube video player', width='100%', height='100%', src='#{videoIframeLink}')
+              #player.embed-responsive-item
               .elements
                 span.playToggle
                   a.play(href='javascript://')
@@ -377,22 +385,42 @@ html(xmlns='http://www.w3.org/1999/xhtml')
     audio#play_messageGet.displayNone
       source(src='/resources/audio/messageGet.mp3', type='audio/mp3')
     script.
-          document.getElementById('nickEnterButton').addEventListener('click', function(){
+
+          function processNickname(){
               nickName = document.getElementById('nickEnterField').value;
               if(nickName != ''){
               document.getElementById('nickEnter').style.display = 'none';
               document.getElementById('messageEnter').style.display = 'table';
+              document.getElementById('messageEnterField').focus();
               sendNickname(nickName);
               }
-              });
-          document.getElementById('messageEnterButton').addEventListener('click', function(){
+          }
+          function processMessage(){
               var text = document.getElementById('messageEnterField').value;
               if(text != ''){
               document.getElementById('messageEnterField').value = '';
               sendMessage(text);
               document.getElementById('messages').innerHTML = document.getElementById('messages').innerHTML + "<p><span>" + nickName + "</span>: " + text + "</p>";
-              }
+          }
+          }
+
+          document.getElementById('nickEnterButton').addEventListener('click', function(){
+              processNickname();
               });
+
+          document.getElementById('nickEnterField').addEventListener('keypress', function(e){
+                if (e.keyCode == "13") {
+              processNickname();
+                    }
+              });
+          document.getElementById('messageEnterButton').addEventListener('click', function(){
+              processMessage();
+              });
+          document.getElementById('messageEnterField').addEventListener('keypress', function(e){
+                          if (e.keyCode == "13") {
+                        processMessage();
+                              }
+                        });
           var leftProgress = document.getElementsByClassName('progressBar')[0].getBoundingClientRect().left;
           var widthProgress = document.getElementsByClassName('progressBar')[0].getBoundingClientRect().width;
           var percentProgress = widthProgress / 100;
@@ -526,7 +554,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
           function exitFullScreen(){
           document.getElementsByClassName('fullscreen')[0].style.display = 'block';
           document.getElementsByClassName('fullscreenExit')[0].style.display = 'none';
-          document.getElementsByClassName('videoplayer')[0].style.border = '1px solid #e7e7e7';
+          //document.getElementsByClassName('videoplayer')[0].style.border = '1px solid #e7e7e7';
           document.getElementsByClassName('fullScreenPlayer')[0].className = 'embed-responsive embed-responsive-16by9';
           }
           document.addEventListener("fullscreenchange", function() {

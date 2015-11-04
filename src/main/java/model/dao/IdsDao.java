@@ -1,5 +1,7 @@
 package model.dao;
 
+import model.entity.WSUser;
+
 import java.util.ArrayList;
 
 /**
@@ -7,9 +9,9 @@ import java.util.ArrayList;
  */
 public interface IdsDao {
 
-    ArrayList<String> insertRoom(String roomUrl, ArrayList<String> arrayList);
+    ArrayList<WSUser> insertRoom(String roomUrl, ArrayList<WSUser> arrayList);
 
-    ArrayList<String> updateRoom(String roomUrl, ArrayList<String> arrayList);
+    ArrayList<WSUser> updateRoom(String roomUrl, ArrayList<WSUser> arrayList);
 
-    ArrayList<String> findRoomById(String roomUrl);
+    ArrayList<WSUser> findRoomById(String roomUrl);
 }

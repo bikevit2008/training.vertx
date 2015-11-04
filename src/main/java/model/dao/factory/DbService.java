@@ -2,6 +2,7 @@ package model.dao.factory;
 
 import model.entity.Room;
 import model.entity.User;
+import model.entity.WSUser;
 import org.mapdb.BTreeMap;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
@@ -29,7 +30,7 @@ public class DbService {
 
     private static final BTreeMap<String, User> users = usersDb.getTreeMap(USERS_TREE_NAME);
     private static final BTreeMap<String, Room> rooms = roomsDb.getTreeMap(ROOMS_TREE_NAME);
-    private static final BTreeMap<String, ArrayList<String>> ids = textHandlerIDS.getTreeMap(TEXTHANDLERIDS_TREE_NAME);
+    private static final BTreeMap<String, ArrayList<WSUser>> ids = textHandlerIDS.getTreeMap(TEXTHANDLERIDS_TREE_NAME);
 
 
 
@@ -41,7 +42,7 @@ public class DbService {
         return rooms;
     }
 
-    public static BTreeMap<String, ArrayList<String>> getIdsTreeMap() {
+    public static BTreeMap<String, ArrayList<WSUser>> getIdsTreeMap() {
         return ids;
     }
 

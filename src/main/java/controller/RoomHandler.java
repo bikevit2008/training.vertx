@@ -6,11 +6,11 @@ import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.RoutingContext;
 import model.entity.Room;
 import model.entity.User;
+import model.entity.WSUser;
 import service.IdsService;
 import service.RoomService;
 import service.UserService;
 import service.factory.ServiceFactory;
-import utils.UrlGenerator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,16 +33,15 @@ public class RoomHandler implements Handler<RoutingContext> {
         HttpServerResponse resp = routingContext.response();
         resp.putHeader("content-type", "text/html");
         Room room = roomService.getRoomByUrl(roomUrl);
-        String provider = room.getProvider();
         String videoId = room.getVideoId();
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("videoIframeLink", UrlGenerator.generateUrl(provider, videoId));
+        model.put("videoId", videoId);
         model.put("messages", room.getMessages());
 
         String sessionId = routingContext.getCookie("vertx-web.session").getValue();
         System.out.println("Session ID from server: " + sessionId);
 
-        ArrayList<String> idsRoom = new ArrayList<String>();
+        ArrayList<WSUser> idsRoom = new ArrayList<WSUser>();
         idsService.addRoom(roomUrl,idsRoom);
 
         User user = new User(sessionId);

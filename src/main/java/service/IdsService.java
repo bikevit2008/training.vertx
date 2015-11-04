@@ -1,5 +1,7 @@
 package service;
 
+import model.entity.WSUser;
+
 import java.util.ArrayList;
 
 /**
@@ -7,9 +9,9 @@ import java.util.ArrayList;
  */
 public interface IdsService {
 
-    ArrayList<String> addRoom(String roomUrl, ArrayList<String> arrayList);
+    ArrayList<WSUser> addRoom(String roomUrl, ArrayList<WSUser> arrayList);
 
-    ArrayList<String> updateRoom(String roomUrl, ArrayList<String> arrayList);
+    ArrayList<WSUser> updateRoom(String roomUrl, ArrayList<WSUser> arrayList);
 
-    ArrayList<String> getRoomByUrl(String roomUrl);
+    ArrayList<WSUser> getRoomByUrl(String roomUrl);
 }

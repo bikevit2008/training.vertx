@@ -1,6 +1,7 @@
 package model.dao.impl;
 
 import model.dao.factory.DbService;
+import model.entity.WSUser;
 import org.mapdb.BTreeMap;
 
 import java.util.ArrayList;
@@ -10,21 +11,21 @@ import java.util.ArrayList;
  */
 public class IdsDaoImpl implements model.dao.IdsDao {
 
-    private BTreeMap<String, ArrayList<String>> ids = DbService.getIdsTreeMap();
+    private BTreeMap<String, ArrayList<WSUser>> ids = DbService.getIdsTreeMap();
 
     @Override
-    public ArrayList<String> insertRoom(String roomUrl, ArrayList<String> arrayList) {
-        ArrayList<String> result = ids.putIfAbsent(roomUrl, arrayList);
+    public ArrayList<WSUser> insertRoom(String roomUrl, ArrayList<WSUser> arrayList) {
+        ArrayList<WSUser> result = ids.putIfAbsent(roomUrl, arrayList);
         return result;    }
 
     @Override
-    public ArrayList<String> updateRoom(String roomUrl, ArrayList<String> arrayList) {
-        ArrayList<String> result = ids.replace(roomUrl, arrayList);
+    public ArrayList<WSUser> updateRoom(String roomUrl, ArrayList<WSUser> arrayList) {
+        ArrayList<WSUser> result = ids.replace(roomUrl, arrayList);
         return result;
     }
 
     @Override
-    public ArrayList<String> findRoomById(String roomUrl) {
+    public ArrayList<WSUser> findRoomById(String roomUrl) {
         return ids.get(roomUrl);
     }
 

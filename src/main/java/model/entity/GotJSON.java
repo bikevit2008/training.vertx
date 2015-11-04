@@ -11,9 +11,8 @@ public class GotJSON implements Serializable {
     private PlayStatus playStatus;
     private double time;
     private String message;
-
-
     private String nickName;
+    private String utils;
 
     public GotJSON() {
     }
@@ -42,6 +41,11 @@ public class GotJSON implements Serializable {
 
     public String getNickName() {
         return nickName;
+    }
+
+
+    public String getUtils() {
+        return utils;
     }
 
 

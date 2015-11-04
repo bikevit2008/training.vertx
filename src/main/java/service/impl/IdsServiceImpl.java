@@ -2,6 +2,7 @@ package service.impl;
 
 import model.dao.IdsDao;
 import model.dao.factory.DaoFactory;
+import model.entity.WSUser;
 import service.IdsService;
 
 import java.util.ArrayList;
@@ -14,15 +15,15 @@ public class IdsServiceImpl implements IdsService {
     private IdsDao idsDao = DaoFactory.getIdsDao();
 
 
-    public ArrayList<String> addRoom(String roomUrl, ArrayList<String> arrayList) {
+    public ArrayList<WSUser> addRoom(String roomUrl, ArrayList<WSUser> arrayList) {
         return idsDao.insertRoom(roomUrl, arrayList);
     }
 
-    public ArrayList<String> updateRoom(String roomUrl, ArrayList<String> arrayList) {
+    public ArrayList<WSUser> updateRoom(String roomUrl, ArrayList<WSUser> arrayList) {
         return idsDao.updateRoom(roomUrl, arrayList);
     }
 
-    public ArrayList<String> getRoomByUrl(String roomUrl) {
+    public ArrayList<WSUser> getRoomByUrl(String roomUrl) {
         return idsDao.findRoomById(roomUrl);
     }
 
