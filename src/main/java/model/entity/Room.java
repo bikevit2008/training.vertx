@@ -18,6 +18,7 @@ public class Room implements Serializable, Comparable<Room> {
     private String videoId;
     public CountUsers countUsers;
     public PlayStatusWork playStatusWork;
+    public long firstPlayTime;
 
     public Room(String roomUrl, String provider, String videoId, PlayStatus playStatus, Long time, int countUsers) {
         this.roomUrl = roomUrl;
@@ -44,6 +45,14 @@ public class Room implements Serializable, Comparable<Room> {
 
     public List<Message> getMessages() {
         return messages;
+    }
+
+    public long getFirstPlayTime() {
+        return firstPlayTime;
+    }
+
+    public void setFirstPlayTime(long firstPlayTme) {
+        this.firstPlayTime = firstPlayTme;
     }
 
     @Override
