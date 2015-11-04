@@ -21,38 +21,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
           var socketInterval;
           var duration;
           var percentVideo;
-          if (!window.WebSocket) {
-          window.WebSocket = window.MozWebSocket;
-          }
-          if (window.WebSocket) {
-          socket = new WebSocket("ws://" + window.location.host + "/websocket" + window.location.pathname);
-          socket.onmessage = function (event) {
-          var parsed = JSON.parse(event.data);
-          if (parsed.playStatus == "PLAY") {
-          playerPlay();
-          } else if (parsed.playStatus == "PAUSE") {
-          playerPause();
-          } else if (parsed.time) {
-          if (parsed.time == currentTime) {} else {
-          playerSeeked(parsed.time);
-          }
-          } else if (parsed.countUsers) {
-          document.getElementById('watchers').innerHTML = parsed.countUsers;
-          }
-          else if(parsed.nickName){
-            document.getElementById('play_messageGet').play();
-            document.getElementById('messages').innerHTML = document.getElementById('messages').innerHTML + "<p><span>" + parsed.nickName + "</span>: " + parsed.text + "</p>";
-          }
-          else if(parsed.utils == "ping"){
-            sendPong();
-          }
-          };
-          socket.onclose = function (event) {
-          socket = new WebSocket("ws://" + window.location.host + "/websocket" + window.location.pathname);
-          };
-          } else {
-          alert("Your browser does not support Web Socket.");
-          }
+
           function send(message) {
           if (!window.WebSocket) {
           return;
@@ -122,6 +91,38 @@ html(xmlns='http://www.w3.org/1999/xhtml')
           }
           // 4. The API will call this function when the video player is ready.
           function onPlayerReady(event) {
+          if (!window.WebSocket) {
+                    window.WebSocket = window.MozWebSocket;
+                    }
+                    if (window.WebSocket) {
+                    socket = new WebSocket("ws://" + window.location.host + "/websocket" + window.location.pathname);
+                    socket.onmessage = function (event) {
+                    var parsed = JSON.parse(event.data);
+                    if (parsed.playStatus == "PLAY") {
+                    playerPlay();
+                    } else if (parsed.playStatus == "PAUSE") {
+                    playerPause();
+                    } else if (parsed.time) {
+                    if (parsed.time == currentTime) {} else {
+                    playerSeeked(parsed.time);
+                    }
+                    } else if (parsed.countUsers) {
+                    document.getElementById('watchers').innerHTML = parsed.countUsers;
+                    }
+                    else if(parsed.nickName){
+                      document.getElementById('play_messageGet').play();
+                      document.getElementById('messages').innerHTML = document.getElementById('messages').innerHTML + "<p><span>" + parsed.nickName + "</span>: " + parsed.text + "</p>";
+                    }
+                    else if(parsed.utils == "ping"){
+                      sendPong();
+                    }
+                    };
+                    socket.onclose = function (event) {
+                    socket = new WebSocket("ws://" + window.location.host + "/websocket" + window.location.pathname);
+                    };
+                    } else {
+                    alert("Your browser does not support Web Socket.");
+                    }
           duration = player.getDuration();
           document.getElementById('duration').innerHTML = fromSeconds(duration);
           percentVideo = duration / 100;
@@ -549,11 +550,13 @@ html(xmlns='http://www.w3.org/1999/xhtml')
           document.getElementsByClassName('fullscreen')[0].style.display = 'none';
           document.getElementsByClassName('fullscreenExit')[0].style.display = 'block';
           document.getElementsByClassName('videoplayer')[0].style.border = 'none';
+          document.getElementsByClassName('col-lg-8 col-xs-12 col-lg-height col-md-height videoplayer')[0].className = 'col-lg-12 col-xs-12 videoplayer';
           document.getElementsByClassName('embed-responsive embed-responsive-16by9')[0].className = 'fullScreenPlayer';
           }
           function exitFullScreen(){
           document.getElementsByClassName('fullscreen')[0].style.display = 'block';
           document.getElementsByClassName('fullscreenExit')[0].style.display = 'none';
+          document.getElementsByClassName('col-lg-12 col-xs-12 videoplayer')[0].className = 'col-lg-8 col-xs-12 col-lg-height col-md-height videoplayer';
           //document.getElementsByClassName('videoplayer')[0].style.border = '1px solid #e7e7e7';
           document.getElementsByClassName('fullScreenPlayer')[0].className = 'embed-responsive embed-responsive-16by9';
           }
