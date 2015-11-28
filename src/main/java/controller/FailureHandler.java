@@ -18,6 +18,7 @@ public class FailureHandler implements Handler<RoutingContext> {
     public void handle(RoutingContext routingContext) {
         HttpServerResponse resp = routingContext.response();
         resp.putHeader("content-type", "text/html");
+        routingContext.response().setStatusCode(404);
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("validationLink", "validLink");
         model.put("displayView", "displayNone");
