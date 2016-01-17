@@ -1,4 +1,4 @@
-package controller;
+package utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Created by Vitaly on 27.10.15.
  */
-public class JSONHandler {
+public class JSONParser {
     public static String convertToJSON(Object object){
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonReturn = "";

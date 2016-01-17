@@ -11,6 +11,7 @@ import service.IdsService;
 import service.RoomService;
 import service.UserService;
 import service.factory.ServiceFactory;
+import utils.JadeEngine;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,15 +48,6 @@ public class RoomHandler implements Handler<RoutingContext> {
         User user = new User(sessionId);
         userService.addUser(user);
 
-
-
-        // Write to the response and end it
-        try {
-            String html = Jade4J.render("web/templates/room.jade", model);
-
-            resp.end(html);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        resp.end(JadeEngine.renderTemplate(model, "room/room"));
     }
 }

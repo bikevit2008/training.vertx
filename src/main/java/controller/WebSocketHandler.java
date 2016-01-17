@@ -8,6 +8,7 @@ import service.IdsService;
 import service.RoomService;
 import service.UserService;
 import service.factory.ServiceFactory;
+import utils.JSONParser;
 
 import java.util.ArrayList;
 
@@ -50,7 +51,7 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
 
         //Send new countUsers to all
         for (WSUser textHandlerIDs : idsRoom) {
-            MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONHandler.convertToJSON(room.countUsers));
+            MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONParser.convertToJSON(room.countUsers));
         }
         //When client connected
 
@@ -64,14 +65,14 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
 
         }
 
-        MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.playStatusWork));
-        MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(room.time));
+        MainServer.eb.publish(textHandlerID, JSONParser.convertToJSON(room.playStatusWork));
+        MainServer.eb.publish(textHandlerID, JSONParser.convertToJSON(room.time));
         //Messages inserted to html
 
 //        Long timer = MainServer.vertx.setPeriodic(1000,  (handler->{
 //            sentTime[0] = System.nanoTime();
 //            System.out.println("Sent time: " + sentTime[0]);
-//            MainServer.eb.publish(textHandlerID, JSONHandler.convertToJSON(MainServer.ping));
+//            MainServer.eb.publish(textHandlerID, JSONParser.convertToJSON(MainServer.ping));
 //        }));
 
         //When client disconnect*/
@@ -87,7 +88,7 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
 
             //Send new countUsers to all
             for (WSUser textHandlerIDs : idsRoom){
-                MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONHandler.convertToJSON(room.countUsers));
+                MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONParser.convertToJSON(room.countUsers));
             }
             System.out.println(room.countUsers.getCountUsers());
             System.out.println("Client: " + serverWebSocket.textHandlerID() + " Disconnected.");
@@ -95,7 +96,7 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         });
         serverWebSocket.frameHandler(handler -> {
             System.out.println("Got message: " + handler.textData());
-            GotJSON gotJSON = JSONHandler.convertFromJSON(handler.textData());
+            GotJSON gotJSON = JSONParser.convertFromJSON(handler.textData());
 
 
             if (gotJSON.getUtils() != null){
@@ -116,7 +117,7 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
                 for (WSUser textHandlerIDs : idsRoom) {
                     if (textHandlerIDs.getTextHandlerId() != textHandlerID) {
 
-                        MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONHandler.convertToJSON(message));
+                        MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONParser.convertToJSON(message));
                     }
                 }
                 room.addMessage(message);
@@ -149,7 +150,7 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
 
                             for (WSUser textHandlerIDs : idsRoom) {
                                 if (textHandlerIDs.getTextHandlerId() != textHandlerID) {
-                                    MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONHandler.convertToJSON(new Time(room.time.getTime() + textHandlerIDs.getPing())));
+                                    MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONParser.convertToJSON(new Time(room.time.getTime() + textHandlerIDs.getPing())));
                                     System.out.println(room.time.getTime() + textHandlerIDs.getPing());
                                 }
                             }

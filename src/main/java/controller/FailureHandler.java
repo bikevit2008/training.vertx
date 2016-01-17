@@ -4,6 +4,7 @@ import de.neuland.jade4j.Jade4J;
 import io.vertx.core.Handler;
 import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.RoutingContext;
+import utils.JadeEngine;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,14 +23,7 @@ public class FailureHandler implements Handler<RoutingContext> {
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("validationLink", "validLink");
         model.put("displayView", "displayNone");
+        resp.end(JadeEngine.renderTemplate(model, "error/errorPage"));
 
-        // Write to the response and end it
-        try {
-            String html = Jade4J.render("web/templates/errorPage.jade", model);
-
-            resp.end(html);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

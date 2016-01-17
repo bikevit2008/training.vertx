@@ -8,6 +8,7 @@ import model.entity.PlayStatus;
 import model.entity.Room;
 import service.RoomService;
 import service.factory.ServiceFactory;
+import utils.JadeEngine;
 import utils.RoomNameGenerator;
 import utils.URLParser;
 
@@ -51,14 +52,8 @@ public class CreateRoomHandler implements Handler<RoutingContext> {
             model.put("error", "error");
             model.put("valueOfIncorrectLink", linkValueVideo);
 
-            // Write to the response and end it
-            try {
-                String html = Jade4J.render("web/templates/landing.jade", model);
+            resp.end(JadeEngine.renderTemplate(model, "home/landing"));
 
-                resp.end(html);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
