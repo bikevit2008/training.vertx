@@ -43,7 +43,7 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         WSUser wsUser = new WSUser(textHandlerID, ping[0]);
         idsRoom.add(wsUser);
         idsService.updateRoom(roomUrl, idsRoom);
-
+//
         room.countUsers.setCountUsers(idsRoom.size());
         roomService.updateRoom(room);
         System.out.println(room.countUsers.getCountUsers());
