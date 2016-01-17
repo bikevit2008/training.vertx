@@ -47,13 +47,12 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         room.countUsers.setCountUsers(idsRoom.size());
         roomService.updateRoom(room);
         System.out.println(room.countUsers.getCountUsers());
-
         //Send new countUsers to all
         for (WSUser textHandlerIDs : idsRoom) {
             MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONHandler.convertToJSON(room.countUsers));
         }
         //When client connected
-
+//
         if(room.countUsers.getCountUsers()!=1) {
 
             deltaTime = (System.currentTimeMillis() - room.getFirstPlayTime())/1000;
@@ -170,4 +169,5 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         String[] splitDot = split[1].split(";");
         return  splitDot[0];
     }
+
 }
