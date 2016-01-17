@@ -52,7 +52,7 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
             MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONHandler.convertToJSON(room.countUsers));
         }
         //When client connected
-//
+
         if(room.countUsers.getCountUsers()!=1) {
 
             deltaTime = (System.currentTimeMillis() - room.getFirstPlayTime())/1000;
