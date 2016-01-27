@@ -22,9 +22,6 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
     private RoomService roomService = ServiceFactory.getRoomService();
     private IdsService idsService = ServiceFactory.getIdsService();
 
-     private long deltaTime;
-
-
 
     @Override
     public void handle(ServerWebSocket serverWebSocket) {
@@ -51,34 +48,23 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
 
         //Send new countUsers to all
         for (WSUser textHandlerIDs : idsRoom) {
-            MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONParser.convertToJSON(room.countUsers));
+//            MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONParser.convertToJSON(room.countUsers));
         }
         //When client connected
-
-        if(room.countUsers.getCountUsers()!=1) {
-
-            deltaTime = (System.currentTimeMillis() - room.getFirstPlayTime())/1000;
-            System.out.println("delta="+deltaTime+"firstPlay="+room.getFirstPlayTime());
-
-            room.time.setTime(deltaTime);
-            roomService.updateRoom(room);
-
-        }
-
-        MainServer.eb.publish(textHandlerID, JSONParser.convertToJSON(room.playStatusWork));
-        MainServer.eb.publish(textHandlerID, JSONParser.convertToJSON(room.time));
+//        MainServer.eb.publish(textHandlerID, JSONParser.convertToJSON(room.playStatusWork));
+//        MainServer.eb.publish(textHandlerID, JSONParser.convertToJSON(room.time));
         //Messages inserted to html
 
-//        Long timer = MainServer.vertx.setPeriodic(1000,  (handler->{
-//            sentTime[0] = System.nanoTime();
-//            System.out.println("Sent time: " + sentTime[0]);
-//            MainServer.eb.publish(textHandlerID, JSONParser.convertToJSON(MainServer.ping));
-//        }));
+        Long timer = MainServer.vertx.setPeriodic(1000,  (handler->{
+            sentTime[0] = System.nanoTime();
+            System.out.println("Sent time: " + sentTime[0]);
+            MainServer.eb.publish(textHandlerID, JSONParser.convertToJSON(MainServer.ping));
+        }));
 
         //When client disconnect*/
         serverWebSocket.closeHandler(handler -> {
 
-//            MainServer.vertx.cancelTimer(timer);
+            MainServer.vertx.cancelTimer(timer);
 
             idsRoom.remove(wsUser);
             idsService.updateRoom(roomUrl, idsRoom);
@@ -131,16 +117,6 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
                                 }
                             }
                             room.playStatusWork.setPlayStatus(gotJSON.getPlayStatus());
-
-
-                            // maybe not here
-                            if(room.countUsers.getCountUsers()==1&&room.playStatusWork.getPlayStatus().equals(PlayStatus.PLAY)) {
-
-                                room.setFirstPlayTime(System.currentTimeMillis());
-                                System.out.println("firstPlayTime="+room.getFirstPlayTime());
-
-                            }
-
                             roomService.updateRoom(room);
                         }
                         if (gotJSON.getTime() != 0) {

@@ -9,11 +9,9 @@ import java.util.regex.Pattern;
 public class URLParser {
 
 
-    static String errorMessage = "Link is not valid";
-    public static String provider;
+    private static String errorMessage = "Link is not valid";
 
-
-    public static String getVideoID(String url) {
+    public static String getVideoID(String url, String provider) {
         if(provider != null){
         String pattern = "";
 
@@ -52,7 +50,7 @@ public class URLParser {
 
 
     public static String getProvider(String url) {
-
+        String provider;
         if (url.contains("youtu")) {
 
             provider = "youtube";

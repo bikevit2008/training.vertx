@@ -1,6 +1,5 @@
 package controller.forms.post;
 
-import de.neuland.jade4j.Jade4J;
 import io.vertx.core.Handler;
 import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.RoutingContext;
@@ -10,9 +9,9 @@ import service.RoomService;
 import service.factory.ServiceFactory;
 import utils.JadeEngine;
 import utils.RoomNameGenerator;
+import utils.RoutingContextAutomator;
 import utils.URLParser;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,36 +22,34 @@ public class CreateRoomHandler implements Handler<RoutingContext> {
 
     private RoomService roomService = ServiceFactory.getRoomService();
 
-
     @Override
     public void handle(RoutingContext routingContext) {
 
         String linkValueVideo = routingContext.request().getFormAttribute("linkValue");
+        System.out.println(linkValueVideo);
         String provider = URLParser.getProvider(linkValueVideo);
-        String videoId = URLParser.getVideoID(linkValueVideo);
+        String videoId = URLParser.getVideoID(linkValueVideo, provider);
         System.out.println("Provider: " + provider + " VideoID: " + videoId);
         String errorMessage = "Link is not valid";
-
+        HttpServerResponse response = routingContext.response();
         if(provider != errorMessage && videoId != errorMessage){
             String roomUrl = RoomNameGenerator.GenerateUrl();
-        Room room = new Room(roomUrl, provider, videoId, PlayStatus.PAUSE, 0L, 0);
+            Room room = new Room(roomUrl, provider, videoId, PlayStatus.PAUSE, 0L, 0);
 
-        roomService.addRoom(room);
+            roomService.addRoom(room);
 
-        routingContext.response().setStatusCode(301);
-        routingContext.response().putHeader("Location", "/room/" + roomUrl);
-        routingContext.response().end();
+            response.setStatusCode(301);
+            response.putHeader("Location", "/room/" + roomUrl);
+            response.end();
         }
         else{
-            HttpServerResponse resp = routingContext.response();
-            resp.putHeader("content-type", "text/html");
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("validationLink", "validLink");
             model.put("displayView", "displayBlock");
             model.put("error", "error");
             model.put("valueOfIncorrectLink", linkValueVideo);
 
-            resp.end(JadeEngine.renderTemplate(model, "home/landing"));
+            RoutingContextAutomator.globalHandle(routingContext, model, "home/landing", response);
 
         }
     }

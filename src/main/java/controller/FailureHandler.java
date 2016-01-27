@@ -5,6 +5,7 @@ import io.vertx.core.Handler;
 import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.RoutingContext;
 import utils.JadeEngine;
+import utils.RoutingContextAutomator;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,13 +18,12 @@ public class FailureHandler implements Handler<RoutingContext> {
 
     @Override
     public void handle(RoutingContext routingContext) {
-        HttpServerResponse resp = routingContext.response();
-        resp.putHeader("content-type", "text/html");
-        routingContext.response().setStatusCode(404);
+        //HttpServerResponse response = routingContext.response();
+        //response.setStatusCode(404);
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("validationLink", "validLink");
         model.put("displayView", "displayNone");
-        resp.end(JadeEngine.renderTemplate(model, "error/errorPage"));
+        RoutingContextAutomator.globalHandle(routingContext, model, "error/errorPage", routingContext.response());
 
     }
 }

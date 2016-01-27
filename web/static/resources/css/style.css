@@ -1,5 +1,11 @@
-   body {
+      body {
       overflow-x:hidden;
+      }
+      li.lang>a{
+        display: inline;
+      }
+      li.lang{
+        padding-top: 10%;
       }
       div.input-url, div.room-url {
       float:none;

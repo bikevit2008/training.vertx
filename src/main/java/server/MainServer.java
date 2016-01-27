@@ -16,6 +16,9 @@ import io.vertx.rxjava.ext.web.handler.SessionHandler;
 import io.vertx.rxjava.ext.web.handler.StaticHandler;
 import io.vertx.rxjava.ext.web.sstore.LocalSessionStore;
 import model.entity.Ping;
+import utils.LangParser;
+
+import java.util.HashMap;
 
 /**
  * Created by denis on 13/10/15.
@@ -29,6 +32,7 @@ public class MainServer {
     public static Vertx vertx = Vertx.vertx();
     public static EventBus eb = vertx.eventBus();
     public static Ping ping = new Ping();
+    public static final HashMap<String, HashMap<String, Object>> languages = LangParser.getLanguages();
 
     public void start() {
 
@@ -51,6 +55,7 @@ public class MainServer {
         resources.handler(StaticHandler.create().setWebRoot("web/static"));
 
         router.post("/createRoom").handler(new CreateRoomHandler());
+
 
         router.route().failureHandler(new FailureHandler());
 
