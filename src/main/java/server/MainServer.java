@@ -1,21 +1,16 @@
 package server;
 
-import controller.FailureHandler;
-import controller.HomeHandler;
-import controller.RoomHandler;
-import controller.WebSocketHandler;
-import controller.forms.post.CreateRoomHandler;
+import controller.WebSocket.WebSocketHandler;
+import controller.http.site.*;
+import controller.http.site.forms.post.*;
+import controller.http.embed.*;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.eventbus.EventBus;
 import io.vertx.rxjava.core.http.HttpServer;
 import io.vertx.rxjava.ext.web.Route;
 import io.vertx.rxjava.ext.web.Router;
-import io.vertx.rxjava.ext.web.handler.BodyHandler;
-import io.vertx.rxjava.ext.web.handler.CookieHandler;
-import io.vertx.rxjava.ext.web.handler.SessionHandler;
-import io.vertx.rxjava.ext.web.handler.StaticHandler;
+import io.vertx.rxjava.ext.web.handler.*;
 import io.vertx.rxjava.ext.web.sstore.LocalSessionStore;
-import model.entity.Ping;
 import utils.LangParser;
 
 import java.util.HashMap;
@@ -31,7 +26,6 @@ public class MainServer {
 
     public static Vertx vertx = Vertx.vertx();
     public static EventBus eb = vertx.eventBus();
-    public static Ping ping = new Ping();
     public static final HashMap<String, HashMap<String, Object>> languages = LangParser.getLanguages();
 
     public void start() {
@@ -51,13 +45,19 @@ public class MainServer {
         Route roomPage = router.route().path("/room/:roomUri/*");
         roomPage.handler(new RoomHandler());
 
-        Route resources = router.route().path("/*");
-        resources.handler(StaticHandler.create().setWebRoot("web/static"));
+
+        Route iframeRoomPage = router.route().path("/embed/room/:roomUri/*");
+        iframeRoomPage.handler(new IframeRoomHandler());
+
+        Route resources = router.route().path("/resources/*");
+        resources.handler(StaticHandler.create().setWebRoot("web/static/resources"));
 
         router.post("/createRoom").handler(new CreateRoomHandler());
 
+        router.route().handler(FaviconHandler.create("web/static/logo.ico"));
 
         router.route().failureHandler(new FailureHandler());
+
 
 
         System.out.println("Listen 8080 port ...");

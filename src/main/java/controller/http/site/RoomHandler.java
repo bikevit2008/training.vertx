@@ -1,4 +1,4 @@
-package controller;
+package controller.http.site;
 
 import de.neuland.jade4j.Jade4J;
 import io.vertx.core.Handler;
@@ -48,6 +48,6 @@ public class RoomHandler implements Handler<RoutingContext> {
         User user = new User(sessionId);
         userService.addUser(user);
 
-        RoutingContextAutomator.globalHandle(routingContext, model, "room/room", routingContext.response());
+        RoutingContextAutomator.globalHandle(routingContext, model, "room/room");
     }
 }

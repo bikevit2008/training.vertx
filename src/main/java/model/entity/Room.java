@@ -51,8 +51,8 @@ public class Room implements Serializable, Comparable<Room> {
         return firstPlayTime;
     }
 
-    public void setFirstPlayTime(long firstPlayTme) {
-        this.firstPlayTime = firstPlayTme;
+    public void setFirstPlayTime(long firstPlayTime) {
+        this.firstPlayTime = firstPlayTime;
     }
 
     @Override

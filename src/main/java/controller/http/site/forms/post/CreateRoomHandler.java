@@ -1,4 +1,4 @@
-package controller.forms.post;
+package controller.http.site.forms.post;
 
 import io.vertx.core.Handler;
 import io.vertx.rxjava.core.http.HttpServerResponse;
@@ -7,7 +7,6 @@ import model.entity.PlayStatus;
 import model.entity.Room;
 import service.RoomService;
 import service.factory.ServiceFactory;
-import utils.JadeEngine;
 import utils.RoomNameGenerator;
 import utils.RoutingContextAutomator;
 import utils.URLParser;
@@ -26,10 +25,8 @@ public class CreateRoomHandler implements Handler<RoutingContext> {
     public void handle(RoutingContext routingContext) {
 
         String linkValueVideo = routingContext.request().getFormAttribute("linkValue");
-        System.out.println(linkValueVideo);
         String provider = URLParser.getProvider(linkValueVideo);
         String videoId = URLParser.getVideoID(linkValueVideo, provider);
-        System.out.println("Provider: " + provider + " VideoID: " + videoId);
         String errorMessage = "Link is not valid";
         HttpServerResponse response = routingContext.response();
         if(provider != errorMessage && videoId != errorMessage){
@@ -49,7 +46,7 @@ public class CreateRoomHandler implements Handler<RoutingContext> {
             model.put("error", "error");
             model.put("valueOfIncorrectLink", linkValueVideo);
 
-            RoutingContextAutomator.globalHandle(routingContext, model, "home/landing", response);
+            RoutingContextAutomator.globalHandle(routingContext, model, "home/landing");
 
         }
     }

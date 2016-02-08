@@ -1,4 +1,4 @@
-package controller;
+package controller.http.site;
 
 import io.vertx.core.Handler;
 import io.vertx.rxjava.ext.web.RoutingContext;
@@ -16,6 +16,6 @@ public class HomeHandler implements Handler<RoutingContext> {
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("validationLink", "validLink");
         model.put("displayView", "displayNone");
-        RoutingContextAutomator.globalHandle(routingContext, model, "home/landing", routingContext.response());
+        RoutingContextAutomator.globalHandle(routingContext, model, "home/landing");
     }
 }

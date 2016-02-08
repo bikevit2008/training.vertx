@@ -1,4 +1,4 @@
-package controller;
+package controller.http.site;
 
 import de.neuland.jade4j.Jade4J;
 import io.vertx.core.Handler;
@@ -18,12 +18,12 @@ public class FailureHandler implements Handler<RoutingContext> {
 
     @Override
     public void handle(RoutingContext routingContext) {
-        //HttpServerResponse response = routingContext.response();
-        //response.setStatusCode(404);
+        HttpServerResponse response = routingContext.response();
+        response.setStatusCode(routingContext.statusCode());
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("validationLink", "validLink");
         model.put("displayView", "displayNone");
-        RoutingContextAutomator.globalHandle(routingContext, model, "error/errorPage", routingContext.response());
+        RoutingContextAutomator.globalHandle(routingContext, model, "error/errorPage");
 
     }
 }
