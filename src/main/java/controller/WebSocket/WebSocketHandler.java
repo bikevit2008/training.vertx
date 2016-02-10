@@ -46,7 +46,11 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         for (WSUser textHandlerIDs : idsRoom) {
             MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONParser.convertToJSON(room.countUsers));
         }
-        if(room.time.getTime() != 0 && room.playStatusWork.getPlayStatus() != PlayStatus.PAUSE){
+
+        if(room.firstPlayTime != 0L){
+            room.time.setTime(room.time.getTime() + (System.currentTimeMillis() - room.firstPlayTime) / 1000);
+        }
+        if(room.time.getTime() != 0){
             MainServer.eb.publish(textHandlerID, JSONParser.convertToJSON(room.playStatusWork));
             MainServer.eb.publish(textHandlerID, JSONParser.convertToJSON(room.time));
         }
@@ -56,7 +60,6 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         serverWebSocket.closeHandler(handler -> {
             //
 //            MainServer.vertx.cancelTimer(timer);
-
             idsRoom.remove(wsUser);
             idsService.updateRoom(roomUrl, idsRoom);
 
@@ -66,6 +69,12 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
             //Send new countUsers to all
             for (WSUser textHandlerIDs : idsRoom){
                 MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), JSONParser.convertToJSON(room.countUsers));
+            }
+
+            if(room.countUsers.getCountUsers() == 0){
+                room.time.setTime(room.time.getTime() + (System.currentTimeMillis() - room.firstPlayTime) / 1000);
+                room.firstPlayTime = 0L;
+                room.playStatusWork.setPlayStatus(PlayStatus.PAUSE);
             }
         });
 
@@ -99,6 +108,13 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
 
             if (gotJSON.getPlayStatus() != null) {
                 if(gotJSON.getPlayStatus() != room.playStatusWork.getPlayStatus()) {
+                    if(room.playStatusWork.getPlayStatus() == PlayStatus.PLAY){
+                        room.firstPlayTime = System.currentTimeMillis();
+                    }
+                    if(room.playStatusWork.getPlayStatus() == PlayStatus.PAUSE){
+                        room.time.setTime(room.time.getTime() + (System.currentTimeMillis() - room.firstPlayTime) / 1000);
+                        room.firstPlayTime = 0L;
+                    }
                     for (WSUser textHandlerIDs : idsRoom) {
                         if (textHandlerIDs.getTextHandlerId() != textHandlerID) {
                             MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), handler.textData());
