@@ -48,6 +48,7 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         }
 
         if(room.firstPlayTime != 0L){
+            System.out.println("When client has been connected: " + room.firstPlayTime);
             room.time.setTime(room.time.getTime() + (System.currentTimeMillis() - room.firstPlayTime) / 1000);
         }
         if(room.time.getTime() != 0){
@@ -72,9 +73,11 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
             }
 
             if(room.countUsers.getCountUsers() == 0){
-                room.time.setTime(room.time.getTime() + (System.currentTimeMillis() - room.firstPlayTime) / 1000);
-                room.firstPlayTime = 0L;
-                room.playStatusWork.setPlayStatus(PlayStatus.PAUSE);
+                if(room.firstPlayTime != 0L){
+                    room.time.setTime(room.time.getTime() + (System.currentTimeMillis() - room.firstPlayTime) / 1000);
+                    room.firstPlayTime = 0L;
+                    room.playStatusWork.setPlayStatus(PlayStatus.PAUSE);
+                }
             }
         });
 
@@ -108,10 +111,10 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
 
             if (gotJSON.getPlayStatus() != null) {
                 if(gotJSON.getPlayStatus() != room.playStatusWork.getPlayStatus()) {
-                    if(room.playStatusWork.getPlayStatus() == PlayStatus.PLAY){
+                    if(gotJSON.getPlayStatus() == PlayStatus.PLAY){
                         room.firstPlayTime = System.currentTimeMillis();
                     }
-                    if(room.playStatusWork.getPlayStatus() == PlayStatus.PAUSE){
+                    if(gotJSON.getPlayStatus() == PlayStatus.PAUSE){
                         room.time.setTime(room.time.getTime() + (System.currentTimeMillis() - room.firstPlayTime) / 1000);
                         room.firstPlayTime = 0L;
                     }
