@@ -50,6 +50,7 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         if(room.firstPlayTime != 0L){
             System.out.println("When client has been connected: " + room.firstPlayTime);
             room.time.setTime(room.time.getTime() + (System.currentTimeMillis() - room.firstPlayTime) / 1000);
+            room.firstPlayTime = System.currentTimeMillis();
         }
         if(room.time.getTime() != 0){
             MainServer.eb.publish(textHandlerID, JSONParser.convertToJSON(room.playStatusWork));
@@ -118,13 +119,15 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
                         room.time.setTime(room.time.getTime() + (System.currentTimeMillis() - room.firstPlayTime) / 1000);
                         room.firstPlayTime = 0L;
                     }
+
+                    room.playStatusWork.setPlayStatus(gotJSON.getPlayStatus());
+                    roomService.updateRoom(room);
+
                     for (WSUser textHandlerIDs : idsRoom) {
                         if (textHandlerIDs.getTextHandlerId() != textHandlerID) {
                             MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), handler.textData());
                         }
                     }
-                    room.playStatusWork.setPlayStatus(gotJSON.getPlayStatus());
-                    roomService.updateRoom(room);
                 }
             }
 

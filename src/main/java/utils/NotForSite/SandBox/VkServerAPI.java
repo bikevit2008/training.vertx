@@ -1,4 +1,4 @@
-/**
+package utils.NotForSite.SandBox; /**
  * Created by vitaly on 11.08.15.
  */
 
@@ -12,7 +12,7 @@ import io.vertx.rxjava.ext.auth.oauth2.AccessToken;
 import io.vertx.rxjava.ext.auth.oauth2.OAuth2Auth;
 import io.vertx.rxjava.ext.web.Router;
 
-public class RxJavaExample {
+public class VkServerAPI {
 
 
 

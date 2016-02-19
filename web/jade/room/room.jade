@@ -132,22 +132,35 @@ block append scripts
         if (event.data == YT.PlayerState.PLAYING) {
         document.getElementsByClassName('play')[0].style.display = 'none';
         document.getElementsByClassName('pause')[0].style.display = 'block';
+        if(playerStatusGot == ""){
         Play();
+        }
+        else{
+        playerStatusGot = "";
+        }
         }
         if(event.data == YT.PlayerState.PAUSED){
         document.getElementsByClassName('pause')[0].style.display = 'none';
         document.getElementsByClassName('play')[0].style.display = 'block';
+        if(playerStatusGot == ""){
         Pause();
+        }
+        else{
+        playerStatusGot = "";
+        }
         }
         if(event.data == YT.PlayerState.BUFFERING){
         Pause();
+        playerStatusGot = "";
         }
         }
         function playerPlay(){
+        playerStatusGot = "Play";
         player.playVideo();
         }
         function playerPause(){
         if(player.getPlayerState() !== 3){
+        playerStatusGot = "Pause";
         player.pauseVideo();
         }
         }
@@ -156,6 +169,7 @@ block append scripts
         document.getElementsByClassName('timeBar')[0].style.width = seconds / percentVideo + '%'
         }
         function playerBuffering(){
+        playerStatusGot = "Buffering";
         player.pauseVideo();
         }
         function fromSeconds(secs) {
