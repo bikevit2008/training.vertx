@@ -30,7 +30,6 @@ public class MainServer {
 
     public void start() {
 
-
         Router router = Router.router(vertx);
 
         router.route().handler(BodyHandler.create());
