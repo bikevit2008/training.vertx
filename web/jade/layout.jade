@@ -1,0 +1,58 @@
+doctype html
+html
+  block head
+    head
+      link(href='/favicon.ico', rel='icon', type='image/x-icon')
+      block meta
+        include modules/verification.jade
+        meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+      block title
+        title OnPlay
+      block styles
+        link(rel='stylesheet', href='/resources/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/resources/css/style.css')
+      block scripts
+        script(src='/resources/js/ga.js')
+        script(src='/resources/js/ya.js')
+        script(src='/resources/js/reformal.js')
+  block body
+    body
+      block header
+        header
+          .row
+            nav.navbar-default.menu
+              .container
+                .navbar-header
+                  a.navbar-brand(href='/', style='padding: 0 0 0 15px;')
+                    svg(xmlns='http://www.w3.org/2000/svg', width='100', height='50')
+                      g
+                        title background
+                        rect#canvas_background(fill='none', height='52', width='102', y='-1', x='-1')
+                        g#canvasGrid(display='none', overflow='visible', y='0', x='0', height='100%', width='100%')
+                          rect(fill='url(#gridpattern)', stroke-width='0', y='0', x='0', height='100%', width='100%')
+                      g
+                        title OnPlay
+                        ellipse#svg_6(stroke-dasharray='5,5', ry='19.062497', rx='19.062497', cy='23.9375', cx='47.375004', stroke-width='1.5', stroke='#ffffff', fill='#24b7f2')
+                        line#svg_10(stroke-linecap='null', stroke-linejoin='null', y2='37.499998', x2='42.6875', y1='13.125002', x1='40.187501', stroke-width='1.5', stroke='#ffffff', fill='none')
+                        line#svg_12(stroke-linecap='null', stroke-linejoin='null', y2='23.25', x2='58.062498', y1='13.250002', x1='40.187501', stroke-width='1.5', stroke='#ffffff', fill='none')
+                        line#svg_13(stroke-linecap='null', stroke-linejoin='null', y2='36.624998', x2='42.8125', y1='23.125', x1='57.812498', stroke-width='1.5', stroke='#ffffff', fill='none')
+                        text#svg_16(stroke='#000000', transform='matrix(0.9835922179106751,0,0,0.9779735803604126,-3.3495292350167274,0.8101592473685741) ', xml:space='preserve', text-anchor='left', font-family='Helvetica, Arial, sans-serif', font-size='24', y='30.874999', x='3.437507', stroke-dasharray='5,5', stroke-width='0', fill='#24b7f2') on
+                .collapse.navbar-collapse
+                  ul.nav.navbar-nav.navbar-right
+                    li.lang
+                      a#en(href='javascript:void(0)', onclick="changeLang('en')") ENG
+                      | /
+                      a#ru(href='javascript:void(0)', onclick="changeLang('ru')") RUS
+      block content
+      block footer
+        footer
+          .row
+            .col-lg-12
+              p © OnPlay, 2015
+        script.
+          function changeLang(name){
+          document.cookie = "Priority-language="+ name + ";max-age=999999999";
+          location.reload()
+          }
+      block addons

@@ -1,0 +1,403 @@
+extends ../layout.jade
+
+block title
+  title #{roomTitle}
+
+block append scripts
+  script(type='text/javascript').
+
+        window.onload = function () {
+        document.getElementById('goToSite').href = window.location.href.replace("/embed", "");
+        };
+        var nickName = '';
+        var posX;
+        var socket;
+        var currentTime;
+        var playerStatusGot = "notUsed";
+        var socketInterval;
+        var duration;
+        var percentVideo;
+
+        function send(message) {
+        if (!window.WebSocket) {
+        return;
+        }
+        if (socket.readyState == WebSocket.OPEN) {
+        socket.send(message);
+        } else {
+        alert("The socket is not open.");
+        }
+        }
+        function Play() {
+        send(JSON.stringify({
+        'playStatus': 'PLAY'
+        }));
+        }
+        function Pause() {
+        send(JSON.stringify({
+        'playStatus': 'PAUSE'
+        }));
+        }
+        function Seeked(seconds) {
+        send(JSON.stringify({
+        'time': seconds
+        }));
+        }
+        function Buffering() {
+        send(JSON.stringify({
+        'playStatus': 'PAUSE'
+        }));
+        }
+        function sendMessage(text) {
+        send(JSON.stringify(
+        {'message': text
+        }));
+        }
+        function sendNickname(nickName) {
+        send(JSON.stringify(
+        {'nickName': nickName
+        }));
+        }
+        function sendPong() {
+        send(JSON.stringify(
+        {'utils': 'pong'
+        }));
+        }
+
+  script.
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        var player;
+        function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+        height: '100%',
+        width: '100%',
+        videoId: '#{videoId}',
+        playerVars: { 'controls': 0, 'rel': 0, 'disablekb': 1, 'fs': 0, 'showinfo': 0},
+        events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+        }
+        });
+        }
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+        if (!window.WebSocket) {
+                  window.WebSocket = window.MozWebSocket;
+                  }
+                  if (window.WebSocket) {
+                  socket = new WebSocket("ws://" + window.location.host + "/websocket" + window.location.pathname.replace("/embed", ""));
+                  socket.onmessage = function (event) {
+                  var parsed = JSON.parse(event.data);
+                  if (parsed.playStatus == "PLAY") {
+                  playerPlay();
+                  } else if (parsed.playStatus == "PAUSE") {
+                  playerPause();
+                  } else if (parsed.time) {
+                  if (parsed.time == currentTime) {} else {
+                  playerSeeked(parsed.time);
+                  }
+                  } else if (parsed.countUsers) {
+                  document.getElementById('watchers').innerHTML = " " +parsed.countUsers;
+                  }
+                  else if(parsed.nickName){
+                    //document.getElementById('play_messageGet').play();
+                    //document.getElementById('messages').innerHTML = document.getElementById('messages').innerHTML + "<p><span>" + parsed.nickName + "</span>: " + parsed.text + "</p>";
+                  }
+                  else if(parsed.utils == "ping"){
+                    sendPong();
+                  }
+                  };
+                  socket.onclose = function (event) {
+                  socket = new WebSocket("ws://" + window.location.host + "/websocket" + window.location.pathname.replace("/embed", ""));
+                  };
+                  } else {
+                  alert("Your browser does not support Web Socket.");
+                  }
+        duration = player.getDuration();
+        document.getElementById('duration').innerHTML = fromSeconds(duration);
+        percentVideo = duration / 100;
+        document.getElementsByClassName('timeBar')[2].style.width = player.getVolume() + '%';
+        setInterval(requestBufferingTime, 100);
+        }
+
+        function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING) {
+        document.getElementsByClassName('play')[0].style.display = 'none';
+        document.getElementsByClassName('pause')[0].style.display = 'block';
+        if(playerStatusGot == "notUsed"){
+        Play();
+        }
+        else{
+        playerStatusGot = "notUsed";
+        }
+        }
+        if(event.data == YT.PlayerState.PAUSED){
+        document.getElementsByClassName('pause')[0].style.display = 'none';
+        document.getElementsByClassName('play')[0].style.display = 'block';
+        if(playerStatusGot == "notUsed"){
+        Pause();
+        }
+        else{
+        playerStatusGot = "notUsed";
+        }
+        }
+        if(event.data == YT.PlayerState.BUFFERING){
+
+        }
+        }
+
+        function playerPlay(){
+        if(player.getPlayerState() == 3){
+          Pause();
+          playerStatusGot = "notUsed";
+        }
+        if (player.getPlayerState() == 2 || player.getPlayerState() == -1 || player.getPlayerState() == 0 || player.getPlayerState() == 5) {
+          playerStatusGot = "Play";
+          player.playVideo();
+        }
+        if(player.getPlayerState() == 1){
+          playerStatusGot = "notUsed";
+        }
+        }
+
+        function playerPause(){
+        if(player.getPlayerState() == 1){
+        playerStatusGot = "Pause";
+        player.pauseVideo();
+        } else{
+          playerStatusGot = "notUsed";
+        }
+        }
+        function playerSeeked(seconds){
+        player.seekTo(seconds);
+        document.getElementsByClassName('timeBar')[0].style.width = seconds / percentVideo + '%'
+        }
+        function playerBuffering(){
+        playerStatusGot = "Buffering";
+        player.pauseVideo();
+        }
+        function fromSeconds(secs) {
+        var sec_num = parseInt(secs, 10); // don't forget the second param
+        var hours   = Math.floor(sec_num / 3600);
+        var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+        var seconds = sec_num - (hours * 3600) - (minutes * 60);
+        if (hours   < 10) {hours   = hours;}
+        if (minutes < 10) {minutes = minutes;}
+        if (seconds < 10) {seconds = "0"+seconds;}
+        if(hours == 0){
+        var time = minutes+':'+seconds;
+        }else{
+        var time = hours+':'+minutes+':'+seconds;
+        }
+        return time;
+        }
+block content
+  .video
+    span#iconEye
+      svg#Views(xmlns='http://www.w3.org/2000/svg', xml:space='preserve', viewbox='0 0 32 32', alt='Людей в комнате', width='18px', xmlns:xlink='http://www.w3.org/1999/xlink', title='Людей в комнате', version='1.1', height='16px')
+        g
+          g
+            path(d='M16.333,13.759L16.333,13.759c-0.006-0.001-0.012-0.001-0.018-0.001c-0.006,0-0.012,0-0.018,0v0.001 c-1.21,0.03-2.183,1.02-2.183,2.237s0.972,2.208,2.183,2.237v0.002c0.006,0,0.012-0.002,0.018-0.002 c0.005,0,0.011,0.002,0.018,0.002v-0.002c1.219-0.029,2.183-1.02,2.183-2.237S17.552,13.789,16.333,13.759z')
+            path(d='M29.586,14.186c-2.76-2.246-7.407-5.51-13.253-5.621v0c-0.006,0-0.012,0-0.018,0c-0.006,0-0.012,0-0.018,0 v0C10.453,8.676,5.801,11.94,3.041,14.186c-0.132,0.107-1.036,0.8-1.051,1.686c-0.011,0.624,0.28,1.085,0.699,1.471 c2.255,2.181,7.176,6.059,13.609,6.087v0.002c0.006,0,0.012,0,0.018,0c0.005,0,0.011,0,0.018,0v-0.002 c6.445-0.028,11.351-3.906,13.607-6.087c0.419-0.386,0.709-0.847,0.697-1.471C30.621,14.986,29.719,14.293,29.586,14.186z M16.315,21.752c-3.162-0.021-5.719-2.59-5.719-5.756s2.557-5.735,5.719-5.755c3.17,0.02,5.718,2.589,5.718,5.755 S19.485,21.73,16.315,21.752z')
+      span#watchers  1
+    span#logoEmbed
+      a#goToSite(href='#', target='_top')
+        svg(width='54', height='31', xmlns='http://www.w3.org/2000/svg')
+          g
+            title background
+            rect#canvas_background(height='33', fill='none', y='-1', width='56', x='-1')
+            g#canvasGrid(display='none')
+              rect#svg_1(height='100%', fill='url(#gridpattern)', stroke-width='0', y='0', x='0', width='100%')
+          g
+            title OnPlay
+            g#svg_2(stroke='null')
+              ellipse#svg_6(stroke='none', fill='#24b7f2', stroke-width='1.5', stroke-dasharray='5,5', ry='15.33072', rx='15.33072', cy='15.33072', cx='38.07708')
+              line#svg_10(stroke='#ffffff', stroke-linecap='null', fill='none', stroke-width='1.5', x2='34.30723', stroke-linejoin='null', y2='26.23814', x1='32.29665', y1='6.63493')
+              line#svg_12(stroke='#ffffff', stroke-linecap='null', fill='none', stroke-width='1.5', x2='46.67234', stroke-linejoin='null', y2='14.77781', x1='32.29665', y1='6.73546')
+              line#svg_13(stroke='#ffffff', stroke-linecap='null', fill='none', stroke-width='1.5', x2='34.40776', stroke-linejoin='null', y2='25.53444', x1='46.47128', y1='14.67728')
+              text#svg_16(stroke='#000000', fill='#24b7f2', stroke-width='0', font-family='Helvetica, Arial, sans-serif', stroke-dasharray='5,5', font-size='24', y='25.8902', x='2.39063', text-anchor='left', xml:space='preserve', transform='matrix(0.7910386243178837,0,0,0.786519923135252,-1.8892057812468133,0.6515578761675902) ') on
+    #player
+    include ../../modules/elements.jade
+block addons
+  script.
+    var leftProgress = document.getElementsByClassName('progressBar')[0].getBoundingClientRect().left;
+    var widthProgress = document.getElementsByClassName('progressBar')[0].getBoundingClientRect().width;
+    var percentProgress = widthProgress / 100;
+    var leftVolume = document.getElementsByClassName('progressBar')[1].getBoundingClientRect().left;
+    var widthVolume = document.getElementsByClassName('progressBar')[1].getBoundingClientRect().width;
+    var percentVolume = widthVolume / 100;
+    window.onresize = function(event) {
+    leftProgress = document.getElementsByClassName('progressBar')[0].getBoundingClientRect().left;
+    widthProgress = document.getElementsByClassName('progressBar')[0].getBoundingClientRect().width;
+    percentProgress = widthProgress / 100;
+    leftVolume = document.getElementsByClassName('progressBar')[1].getBoundingClientRect().left;
+    widthVolume = document.getElementsByClassName('progressBar')[1].getBoundingClientRect().width;
+    percentVolume = widthVolume / 100;
+    };
+    var mousedownProgress = 0;
+    var mousedownVolume = 0;
+    document.body.addEventListener('mousemove', (function(e) {
+    e = e || window.event;
+    posX = e.pageX;
+    if(mousedownProgress == 1){
+    var positionProgress = posX - leftProgress;
+    if(posX < 0){
+    positionProgress = 0;
+    }
+    if(posX > widthProgress + leftProgress){
+    positionProgress = widthProgress;
+    }
+    document.getElementsByClassName('timeBar')[1].style.width = positionProgress / percentProgress + '%';
+    }
+    if(mousedownVolume == 1){
+    var positionVolume = posX - leftVolume;
+    if(posX < 0){
+    positionVolume = 0;
+    }
+    if(posX > widthVolume + leftVolume){
+    positionVolume = widthVolume;
+    }
+    player.setVolume(positionVolume / percentVolume);
+    document.getElementsByClassName('timeBar')[2].style.width = positionVolume / percentVolume + '%';
+    }
+    }
+    ))
+    document.getElementsByClassName('progressBar')[0].addEventListener('mousedown', (function(e) {
+    mousedownProgress = 1;
+    document.body.onselectstart = function(){
+    return false;
+    }
+    document.getElementsByClassName('timeBar')[0].style.display = 'none';
+    document.getElementsByClassName('timeBar')[1].style.display = 'block';
+    document.body.addEventListener('mouseup', (function scrollDrag(e) {
+    mousedownProgress = 0;
+    var positionProgress = posX - leftProgress;
+    if(posX < 0){
+    positionProgress = 0;
+    }
+    if(posX > widthProgress + leftProgress){
+    positionProgress = widthProgress;
+    }
+    document.getElementsByClassName('timeBar')[1].style.width = positionProgress / percentProgress + '%';
+    Seeked(positionProgress / percentProgress * percentVideo);
+    playerSeeked(positionProgress / percentProgress * percentVideo);
+    document.getElementsByClassName('timeBar')[0].style.display = 'block';
+    document.getElementsByClassName('timeBar')[1].style.display = 'none';
+    document.body.removeEventListener('mouseup', scrollDrag);
+    }
+    ))
+    }
+    ))
+    document.getElementsByClassName('progressBar')[1].addEventListener('mousedown', (function(e) {
+    mousedownVolume = 1;
+    document.body.onselectstart = function(){
+    return false;
+    }
+    document.body.addEventListener('mouseup', (function scrollDragVolume(e) {
+    mousedownVolume = 0;
+    var positionVolume = posX - leftVolume;
+    if(posX < 0){
+    positionVolume = 0;
+    }
+    if(posX > widthVolume + leftVolume){
+    positionVolume = widthVolume;
+    }
+    document.getElementsByClassName('timeBar')[2].style.width = positionVolume / percentVolume + '%';
+    player.setVolume(positionVolume / percentVolume);
+    document.body.removeEventListener('mouseup', scrollDragVolume);
+    }
+    ))
+    }
+    ))
+    function requestBufferingTime(){
+    var currentTime = player.getCurrentTime();
+    document.getElementById('currentTime').innerHTML = fromSeconds(currentTime);
+    document.getElementsByClassName('bufferBar')[0].style.width = player.getVideoLoadedFraction() * 100 + '%';
+    document.getElementsByClassName('timeBar')[0].style.width = currentTime / percentVideo + '%';
+    }
+    document.getElementsByClassName('play')[0].addEventListener('click', function() {
+    player.playVideo();
+    })
+    document.getElementsByClassName('pause')[0].addEventListener('click', (function() {
+    player.pauseVideo();
+    }))
+    document.getElementsByClassName('fullscreen')[0].addEventListener("click", function() {
+    var element = document.getElementsByClassName('video')[0];
+    if(element.requestFullscreen) {
+    element.requestFullscreen();
+    } else if(element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();
+    } else if(element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+    } else if(element.msRequestFullscreen) {
+    element.msRequestFullscreen();
+    }
+    })
+    document.getElementsByClassName('fullscreenExit')[0].addEventListener("click", function() {
+    if(document.exitFullscreen) {
+    document.exitFullscreen();
+    } else if(document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+    } else if(document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+    }
+    })
+    function startFullScreen(){
+    document.getElementsByClassName('fullscreen')[0].style.display = 'none';
+    document.getElementsByClassName('fullscreenExit')[0].style.display = 'block';
+    }
+    function exitFullScreen(){
+    document.getElementsByClassName('fullscreen')[0].style.display = 'block';
+    document.getElementsByClassName('fullscreenExit')[0].style.display = 'none';
+    }
+    document.addEventListener("fullscreenchange", function() {
+    if(document.fullscreenElement){
+    startFullScreen();
+    } else{
+    exitFullScreen();
+    }
+    });
+    document.addEventListener("mozfullscreenchange", function() {
+    if(document.mozFullScreenElement){
+    startFullScreen();
+    } else{
+    exitFullScreen();
+    }
+    });
+    document.addEventListener("webkitfullscreenchange", function() {
+    if(document.webkitFullscreenElement){
+    startFullScreen();
+    } else{
+    exitFullScreen();
+    }
+    });
+    document.addEventListener("msfullscreenchange", function() {
+    if(document.msFullscreenElement){
+    startFullScreen();
+    } else{
+    exitFullScreen();
+    }});
+    function hideElementsGUI(){
+    document.getElementById('elements').style.display = 'none';
+    document.getElementById('iconEye').style.display = 'none';
+    document.getElementById('logoEmbed').style.display = 'none';
+    }
+    function showElementsGUI(){
+    document.getElementById('elements').style.display = 'block';
+    document.getElementById('iconEye').style.display = 'block';
+    document.getElementById('logoEmbed').style.display = 'block';
+    }
+    document.getElementsByClassName('video')[0].addEventListener("mouseout", function() {
+    hideElementsGUI();
+    })
+    document.getElementsByClassName('video')[0].addEventListener("mouseover", function() {
+    showElementsGUI();
+    })

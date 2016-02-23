@@ -1,5 +1,11 @@
-   body {
+      body {
       overflow-x:hidden;
+      }
+      li.lang>a{
+        display: inline;
+      }
+      li.lang{
+        padding-top: 10%;
       }
       div.input-url, div.room-url {
       float:none;
@@ -97,138 +103,170 @@
       line-height:1.7;
       color:#1BA0D5;
       }
-              a {
-              text-decoration:none;
-              color:rgb(36, 183, 242);
-              }
-              .centered {
-              text-align:center;
-              }
-              div.chat nav {
-              margin-left:.7%;
-              }
-              div.videoplayer {
-              padding:0;
-              position:relative;
-              }
-              div.videolink {
-              padding-top:1.5%;
-              padding-left:0;
-              }
-              span.viewing {
-              float:left;
-              margin-right:1.5%;
-              line-height:2.5em;
-              padding-left:0.5%;
-              }
-              .icon{
-              margin-bottom: -3px;
-              margin-top: 3px;
-              margin-right: 5px;
-              }
-              div.elements {
-              position:absolute;
-              width:100%;
-              bottom:0;
-              z-index:5;
-              height:33px;
-              line-height:33px;
-              background:rgba(246,246,246,.85);
-              overflow:hidden;
-              }
-              div.elements span {
-              float:left;
-              height:100%;
-              text-align:center;
-              border-right:1px solid #dddddd;
-              overflow:hidden;
-              font-size: 1em;
-              }
-              div.elements input {
-              padding:7px;
-              cursor:pointer;
-              }
-              div.elements p {
-              display:inline;
-              }
-              div.elements>span>a {
-              color:black;
-              }
-              span.playToggle {
-              width:4%;
-              }
-              a.pause {
-              display:none;
-              }
-              a.fullscreenExit{
-              display: none;
-              }
-              span.time {
-              width:12%;
-              -ms-user-select: none;
-              -moz-user-select: none;
-              -khtml-user-select: none;
-              -webkit-user-select: none;
-              }
-              span.seek {
-              width:66%;
-              position:relative;
-              }
-              span.volume {
-              width:10%;
-              position:relative;
-              text-align:left!important;
-              padding-left:1%;
-              }
-              div.progressBar	{
-              width:90%;
-              height:9px;
-              background-color:#4f4f4f;
-              position:absolute;
-              top:50%;
-              left:55%;
-              margin:-4.5px 0 0 -50%;
-              -webkit-border-radius:3px;
-              -moz-border-radius:3px;
-              border-radius:3px;
-              cursor:pointer;
-              }
-              div.timeBar {
-              max-width:100%;
-              height:100%;
-              width:0%;
-              position:absolute;
-              background-color:#898989;
-              -webkit-border-radius:0;
-              -webkit-border-top-left-radius:3px;
-              -webkit-border-bottom-left-radius:3px;
-              -moz-border-radius:0;
-              -moz-border-radius-topleft:3px;
-              -moz-border-radius-bottomleft:3px;
-              border-radius:0;
-              border-top-left-radius:3px;
-              border-bottom-left-radius:3px;
-              }
-              div.bufferBar {
-              max-width:100%;
-              height:100%;
-              width:0%;
-              position:absolute;
-              background-color:#B8B8B8;
-              }
-              span.volume div.progressBar {
-              width:54%;
-              margin:-4.5px 0 0 -25%;
-              }
-              span.hd {
-              width:4%;
-              }
-              span.full {
-              width:4%;
-              border-right:0!important;
-              }
+      a {
+      text-decoration:none;
+      color:rgb(36, 183, 242);
+      }
+      .centered {
+      text-align:center;
+      }
+      div.chat nav {
+      margin-left:.7%;
+      }
+      div.videoplayer {
+      padding:0;
+      position:relative;
+      }
+      div.videolink {
+      padding-top:1.5%;
+      padding-left:0;
+      }
+      span.viewing {
+      float:left;
+      margin-right:1.5%;
+      line-height:2.5em;
+      padding-left:0.5%;
+      }
+      .icon{
+      margin-bottom: -3px;
+      margin-top: 3px;
+      margin-right: 5px;
+      }
+      div.elements {
+      position:absolute;
+      width:100%;
+      bottom:0;
+      z-index:5;
+      height:33px;
+      line-height:33px;
+      background:rgba(246,246,246,.85);
+      overflow:hidden;
+      }
+      div.elements span {
+      float:left;
+      height:100%;
+      text-align:center;
+      border-right:1px solid #dddddd;
+      overflow:hidden;
+      font-size: 1em;
+      }
+      div.elements input {
+      padding:7px;
+      cursor:pointer;
+      }
+      div.elements p {
+      display:inline;
+      }
+      div.elements>span>a {
+      color:black;
+      }
+      a.pause {
+      display:none;
+      }
+      a.fullscreenExit{
+      display: none;
+      }
+      div.progressBar	{
+      width:90%;
+      height:9px;
+      background-color:#4f4f4f;
+      position:absolute;
+      top:50%;
+      left:55%;
+      margin:-4.5px 0 0 -50%;
+      -webkit-border-radius:3px;
+      -moz-border-radius:3px;
+      border-radius:3px;
+      cursor:pointer;
+      }
+      div.timeBar {
+      max-width:100%;
+      height:100%;
+      width:0%;
+      position:absolute;
+      background-color:#898989;
+      -webkit-border-radius:0;
+      -webkit-border-top-left-radius:3px;
+      -webkit-border-bottom-left-radius:3px;
+      -moz-border-radius:0;
+      -moz-border-radius-topleft:3px;
+      -moz-border-radius-bottomleft:3px;
+      border-radius:0;
+      border-top-left-radius:3px;
+      border-bottom-left-radius:3px;
+      }
+      div.bufferBar {
+      max-width:100%;
+      height:100%;
+      width:0%;
+      position:absolute;
+      background-color:#B8B8B8;
+      }
+      span.volume div.progressBar {
+      width:54%;
+      margin:-4.5px 0 0 -25%;
+      }
       .row {
           margin:0;
+      }
+      span.time {
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+      }
+      span.seek {
+        position:relative;
+      }
+      span.volume {
+        position:relative;
+        text-align:left!important;
+        padding-left:1%;
+      }
+      span.full {
+        border-right:0!important;
+      }
+      @media (min-width: 0px) {
+        span.playToggle {
+          width:7%;
+        }
+        span.time {
+          width:27%;
+        }
+        span.seek {
+          width:50%;
+        }
+        span.volume {
+          width:18%;
+          display: none;
+        }
+        span.hd {
+          width:9%;
+        }
+        span.full {
+          width:7%;
+        }
+      }
+      @media (min-width: 768px) {
+        span.playToggle {
+          width:5%;
+        }
+        span.time {
+          width:15%;
+        }
+        span.seek {
+          width:53%;
+        }
+        span.volume {
+          width:15%;
+          display: block;
+        }
+        span.hd {
+          width:6%;
+        }
+        span.full {
+          width:6%;
+        }
       }
       @media (min-width: 992px) {
          .row-same-height {
@@ -243,16 +281,35 @@
           }
       }
       @media (min-width: 1200px) {
-           .row-same-height {
-              display:table;
-              width:100%;
-              table-layout:fixed;
-          }
-          .col-lg-height {
-              display:table-cell;
-              float:none!important;
-              vertical-align:top;
-          }
+        span.playToggle {
+          width:3%;
+        }
+        span.time {
+          width:11%;
+        }
+        span.seek {
+          width:69%;
+        }
+        span.volume {
+          width:11%;
+          display: block;
+        }
+        span.hd {
+          width:3%;
+        }
+        span.full {
+          width:3%;
+        }
+         .row-same-height {
+            display:table;
+            width:100%;
+            table-layout:fixed;
+        }
+        .col-lg-height {
+            display:table-cell;
+            float:none!important;
+            vertical-align:top;
+        }
       }
       nav.menu {
           min-height:75px;
@@ -304,7 +361,7 @@
           margin:0 .3%;
           margin-right:1%;
       }
-      #link {
+      #link, #embedCode {
           display:none;
           height:39px;
           min-width:150px;
@@ -346,4 +403,54 @@
       }
       div.chat span {
           font-weight:bold;
+      }
+      .fullScreenPlayer{
+        height: 100%;
+      }
+      .videoplayer{
+        height: 100%;
+      }
+      html, body {
+        margin:0;
+        height: 100%;
+        width: 100%;
+      }
+      .video{
+        width:100%;
+        height:100%;
+        position:relative;
+        overflow: hidden;
+      }
+      .elements {
+          position: absolute;
+          width: 100%;
+          bottom: 0;
+          z-index: 5;
+          height: 33px;
+          line-height: 33px;
+          background: rgba(246,246,246,.85);
+          overflow: hidden;
+      }
+      #logoEmbed{
+        right: 0;
+        opacity: 0.7;
+        background: none;
+      }
+      #iconEye{
+        opacity: 0.7;
+        color:white;
+        left:0;
+        padding:1em;
+        background: rgba(0,0,0,.1);
+      }
+      #iconEye svg{
+        color:white;
+        fill:white;
+        vertical-align: -3px;
+      }
+      .video>span {
+        overflow: hidden;
+        position:absolute;
+        top:0;
+        padding:1em;
       }
