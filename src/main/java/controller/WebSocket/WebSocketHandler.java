@@ -48,7 +48,6 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
         }
 
         if(room.firstPlayTime != 0L){
-            System.out.println("When client has been connected: " + room.firstPlayTime);
             room.time.setTime(room.time.getTime() + (System.currentTimeMillis() - room.firstPlayTime) / 1000);
             room.firstPlayTime = System.currentTimeMillis();
         }
@@ -111,7 +110,14 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
             }
 
             if (gotJSON.getPlayStatus() != null) {
-                if(gotJSON.getPlayStatus() != room.playStatusWork.getPlayStatus()) {
+                System.out.println("Playstatus: " + gotJSON.getPlayStatus() + " got from: " + textHandlerID);
+                for (WSUser textHandlerIDs : idsRoom) {
+                    if (textHandlerIDs.getTextHandlerId() != textHandlerID) {
+                        System.out.println("Playstatus: " + gotJSON.getPlayStatus() + " sent to: " + textHandlerIDs.getTextHandlerId());
+                        MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), handler.textData());
+                    }
+                }
+
                     if(gotJSON.getPlayStatus() == PlayStatus.PLAY){
                         room.firstPlayTime = System.currentTimeMillis();
                     }
@@ -119,16 +125,18 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
                         room.time.setTime(room.time.getTime() + (System.currentTimeMillis() - room.firstPlayTime) / 1000);
                         room.firstPlayTime = 0L;
                     }
-
-                    room.playStatusWork.setPlayStatus(gotJSON.getPlayStatus());
-                    roomService.updateRoom(room);
-
-                    for (WSUser textHandlerIDs : idsRoom) {
-                        if (textHandlerIDs.getTextHandlerId() != textHandlerID) {
-                            MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), handler.textData());
-                        }
+                    if(gotJSON.getPlayStatus() == PlayStatus.BUFFERING){
+                        room.time.setTime(room.time.getTime() + (System.currentTimeMillis() - room.firstPlayTime) / 1000);
+                        room.firstPlayTime = 0L;
                     }
-                }
+                    if(gotJSON.getPlayStatus() != PlayStatus.BUFFERING) {
+//                System.out.println("Playstatus in room before update: " + room.playStatusWork.getPlayStatus());
+//                System.out.println("Playstatus got value from client: " + gotJSON.getPlayStatus());
+                room.playStatusWork.setPlayStatus(gotJSON.getPlayStatus());
+                roomService.updateRoom(room);
+//                System.out.println("Playstatus in room after update: " + room.playStatusWork.getPlayStatus());
+            }
+
             }
 
             if (gotJSON.getTime() != 0) {
@@ -137,6 +145,7 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
                         MainServer.eb.publish(textHandlerIDs.getTextHandlerId(), handler.textData());
                     }
                 }
+                room.firstPlayTime = 0L;
                 room.time.setTime(gotJSON.getTime());
                 roomService.updateRoom(room);
             }

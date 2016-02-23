@@ -160,31 +160,11 @@
       div.elements>span>a {
       color:black;
       }
-      span.playToggle {
-      width:4%;
-      }
       a.pause {
       display:none;
       }
       a.fullscreenExit{
       display: none;
-      }
-      span.time {
-      width:12%;
-      -ms-user-select: none;
-      -moz-user-select: none;
-      -khtml-user-select: none;
-      -webkit-user-select: none;
-      }
-      span.seek {
-      width:66%;
-      position:relative;
-      }
-      span.volume {
-      width:10%;
-      position:relative;
-      text-align:left!important;
-      padding-left:1%;
       }
       div.progressBar	{
       width:90%;
@@ -226,15 +206,67 @@
       width:54%;
       margin:-4.5px 0 0 -25%;
       }
-      span.hd {
-      width:4%;
-      }
-      span.full {
-      width:4%;
-      border-right:0!important;
-      }
       .row {
           margin:0;
+      }
+      span.time {
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+      }
+      span.seek {
+        position:relative;
+      }
+      span.volume {
+        position:relative;
+        text-align:left!important;
+        padding-left:1%;
+      }
+      span.full {
+        border-right:0!important;
+      }
+      @media (min-width: 0px) {
+        span.playToggle {
+          width:7%;
+        }
+        span.time {
+          width:27%;
+        }
+        span.seek {
+          width:50%;
+        }
+        span.volume {
+          width:18%;
+          display: none;
+        }
+        span.hd {
+          width:9%;
+        }
+        span.full {
+          width:7%;
+        }
+      }
+      @media (min-width: 768px) {
+        span.playToggle {
+          width:5%;
+        }
+        span.time {
+          width:15%;
+        }
+        span.seek {
+          width:53%;
+        }
+        span.volume {
+          width:15%;
+          display: block;
+        }
+        span.hd {
+          width:6%;
+        }
+        span.full {
+          width:6%;
+        }
       }
       @media (min-width: 992px) {
          .row-same-height {
@@ -249,16 +281,35 @@
           }
       }
       @media (min-width: 1200px) {
-           .row-same-height {
-              display:table;
-              width:100%;
-              table-layout:fixed;
-          }
-          .col-lg-height {
-              display:table-cell;
-              float:none!important;
-              vertical-align:top;
-          }
+        span.playToggle {
+          width:3%;
+        }
+        span.time {
+          width:11%;
+        }
+        span.seek {
+          width:69%;
+        }
+        span.volume {
+          width:11%;
+          display: block;
+        }
+        span.hd {
+          width:3%;
+        }
+        span.full {
+          width:3%;
+        }
+         .row-same-height {
+            display:table;
+            width:100%;
+            table-layout:fixed;
+        }
+        .col-lg-height {
+            display:table-cell;
+            float:none!important;
+            vertical-align:top;
+        }
       }
       nav.menu {
           min-height:75px;
@@ -310,7 +361,7 @@
           margin:0 .3%;
           margin-right:1%;
       }
-      #link {
+      #link, #embedCode {
           display:none;
           height:39px;
           min-width:150px;
@@ -359,11 +410,16 @@
       .videoplayer{
         height: 100%;
       }
-      body {margin:0;}
+      html, body {
+        margin:0;
+        height: 100%;
+        width: 100%;
+      }
       .video{
-      	width:100%;
-      	height:100%;
-      	position:relative;
+        width:100%;
+        height:100%;
+        position:relative;
+        overflow: hidden;
       }
       .elements {
           position: absolute;
@@ -374,4 +430,27 @@
           line-height: 33px;
           background: rgba(246,246,246,.85);
           overflow: hidden;
+      }
+      #logoEmbed{
+        right: 0;
+        opacity: 0.7;
+        background: none;
+      }
+      #iconEye{
+        opacity: 0.7;
+        color:white;
+        left:0;
+        padding:1em;
+        background: rgba(0,0,0,.1);
+      }
+      #iconEye svg{
+        color:white;
+        fill:white;
+        vertical-align: -3px;
+      }
+      .video>span {
+        overflow: hidden;
+        position:absolute;
+        top:0;
+        padding:1em;
       }
