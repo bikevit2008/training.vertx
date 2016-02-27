@@ -1,0 +1,21 @@
+doctype html
+html
+  block head
+    head
+      link(href='/favicon.ico', rel='icon', type='image/x-icon')
+      block meta
+        include ../modules/verification.jade
+        meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+      block title
+        title OnPlay
+      block styles
+        link(rel='stylesheet', href='/resources/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/resources/css/style.css')
+      block scripts
+        script(src='/resources/js/ga.js')
+        script(src='/resources/js/ya.js')
+  block body
+    body
+      block content
+      block addons

@@ -1,0 +1,20 @@
+extends ../layout.jade
+
+block title
+  title #{errorTitle}
+
+block content
+  .content
+    .banner
+      .container
+        .row
+              label.visible-lg-block.visible-md-block
+                h1(style='font-size: 156px;') 404
+                h1(style='font-size: 76px;') #{errorNotFoundPage}
+        .row
+          form(method='post', action='/createRoom')
+            .input-url.col-lg-8.col-xs-12
+              .input-group.input-group-lg
+                input.form-control(type='text', name='linkValue', placeholder='#{linkVideoLabel}', aria-describedby='#{linkVideoLabel}', value='#{valueOfIncorrectLink}', class='#{validationLink}')
+                span.input-group-btn
+                  button.btn.btn-default(type='submit') >>

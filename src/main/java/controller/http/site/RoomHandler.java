@@ -1,4 +1,4 @@
-package controller;
+package controller.http.site;
 
 import de.neuland.jade4j.Jade4J;
 import io.vertx.core.Handler;
@@ -11,6 +11,8 @@ import service.IdsService;
 import service.RoomService;
 import service.UserService;
 import service.factory.ServiceFactory;
+import utils.JadeEngine;
+import utils.RoutingContextAutomator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,10 +32,9 @@ public class RoomHandler implements Handler<RoutingContext> {
     @Override
     public void handle(RoutingContext routingContext) {
         String roomUrl = routingContext.request().getParam("roomUri");
-        HttpServerResponse resp = routingContext.response();
-        resp.putHeader("content-type", "text/html");
         Room room = roomService.getRoomByUrl(roomUrl);
         String videoId = room.getVideoId();
+
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("videoId", videoId);
         model.put("messages", room.getMessages());
@@ -47,15 +48,6 @@ public class RoomHandler implements Handler<RoutingContext> {
         User user = new User(sessionId);
         userService.addUser(user);
 
-
-
-        // Write to the response and end it
-        try {
-            String html = Jade4J.render("web/templates/room.jade", model);
-
-            resp.end(html);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        RoutingContextAutomator.globalHandle(routingContext, model, "room/room");
     }
 }
