@@ -30,18 +30,18 @@ public class RoomNameGenerator {
             return replace;
         }
 
-         public static String generate(int from, int to) {
-        String pass = "";
-        Random r = new Random();
-        int cntchars = from + r.nextInt(to - from + 1);
+        public static String generate(int from, int to) {
+            String pass = "";
+            Random r = new Random();
+            int cntchars = from + r.nextInt(to - from + 1);
 
-        for (int i = 0; i < cntchars; ++i) {
-            char    next = '0';
-            int       range = 10;
+            for (int i = 0; i < cntchars; ++i) {
+                char    next = '0';
+                int       range = 10;
 
-            pass += (char) ((r.nextInt(range)) + next);
+                pass += (char) ((r.nextInt(range)) + next);
 
-        }
-        return pass;
+            }
+            return pass;
     }
 }
