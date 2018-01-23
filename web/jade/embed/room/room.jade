@@ -91,7 +91,7 @@ block append scripts
                   window.WebSocket = window.MozWebSocket;
                   }
                   if (window.WebSocket) {
-                  socket = new WebSocket("ws://" + window.location.host + "/websocket" + window.location.pathname.replace("/embed", ""));
+                  socket = new WebSocket(window.location.origin.replace('http', 'ws') + "/websocket" + window.location.pathname.replace("/embed", ""));
                   socket.onmessage = function (event) {
                   var parsed = JSON.parse(event.data);
                   if (parsed.playStatus == "PLAY") {
