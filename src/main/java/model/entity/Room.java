@@ -64,6 +64,8 @@ public class Room implements Serializable, Comparable<Room> {
     public String toString() {
         return "Room{" +
                 "roomUrl='" + roomUrl + '\'' +
+                ", videoId=" + videoId +
+                ", provider=" + provider +
                 ", messages=" + messages +
                 '}';
     }
